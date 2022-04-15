@@ -1,0 +1,16 @@
+# CPE-CPU - A 32 Bit RV32I Processor
+Designed by Patrick Hoey - UML
+
+
+# General Notes
+* Design Concepts
+** For R-Type Instructions
+*** ALU Design - Appendix A
+*** Multiported Register Deisgn - Appendix A.8
+** For J-Type Instructions
+*** Need to sign extend 12 bit jump instructions - figure 4.8 pg 247
+**** Offset field is shifted left 1 bit to allow higher range of jump
+*** Determine branch jump instruction - determine conditional - follow correct path
+** Control Logic - pg 251 ch. 4.4
+*** Break down the control logic into sub control blocks (ex. ALU control module)
+
