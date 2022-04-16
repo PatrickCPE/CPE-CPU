@@ -1,65 +1,67 @@
 //                              -*- Mode: Verilog -*-
-// Filename        : pc.v
-// Description     : program counter for the cpe cpu
+// Filename        : cpe_cpu_tb.v
+// Description     : cpe cpu top level tb
 // Author          : Patrick
-// Created On      : Fri Apr 15 15:34:28 2022
+// Created On      : Fri Apr 15 17:13:24 2022
 // Last Modified By: Patrick
-// Last Modified On: Fri Apr 15 15:34:28 2022
+// Last Modified On: Fri Apr 15 17:13:24 2022
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
-
-//-----------------------------------------------------------------------------
-// Parameters
-//-----------------------------------------------------------------------------
+`timescale 1ns/1ps
 
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module pc (/*AUTOARG*/
-   // Outputs
-   instr_w_o,
-   // Inputs
-   pc_w_i, clk_w_i, res_w_i_h
-   ) ;
+module cpe_cpu_tb (/*AUTOARG*/) ;
 
    //-----------------------------------------------------------------------------
    // Inputs
    //-----------------------------------------------------------------------------
-   input wire [31:0] pc_w_i;
-   input wire        clk_w_i;
-   input wire        res_w_i_h;
 
    //-----------------------------------------------------------------------------
    // Outputs
    //-----------------------------------------------------------------------------
-   output wire [31:0] instr_w_o;
 
+   //-----------------------------------------------------------------------------
+   // Parameters
+   //-----------------------------------------------------------------------------
 
    //-----------------------------------------------------------------------------
    // Internal Registers and Wires
    //-----------------------------------------------------------------------------
-   reg [31:0] curr_instr_r;
+   wire [31:0] alu_w_o;
+   wire [31:0] reg_w_o;
+   wire [31:0] pc_w_o;
+   wire        mem_wr_w_o_h;
+   wire        mem_rd_w_o_h;
+
+   wire        clk_w_i;
+   wire        res_w_i_h;
+   wire [31:0] instr_w_i;
 
    //-----------------------------------------------------------------------------
    // Instantiations
    //-----------------------------------------------------------------------------
+   cpe_cpu duv(/*AUTOINST*/
+               // Outputs
+               .alu_w_o                 (alu_w_o),
+               .reg_w_o                 (reg_w_o),
+               .pc_w_o                  (pc_w_o),
+               .mem_wr_w_o_h            (mem_wr_w_o_h),
+               .mem_rd_w_o_h            (mem_rd_w_o_h),
+               // Inputs
+               .clk_w_i                 (clk_w_i),
+               .res_w_i_h               (res_w_i_h),
+               .instr_w_i               (instr_w_i));
 
    //-----------------------------------------------------------------------------
    // RTL
    //-----------------------------------------------------------------------------
-   always @ (posedge clk_w_i or posedge res_w_i_h) begin
-      if (res_w_i_h) begin
-         curr_instr_r <= 0;
-      end else begin
-         curr_instr_r <= pc_w_i;
-      end
-   end
 
    //-----------------------------------------------------------------------------
    // Assigns
    //-----------------------------------------------------------------------------
-   assign instr_w_o = curr_instr_r;
 
-endmodule // pc
+endmodule // cpe_cpu_tb
 

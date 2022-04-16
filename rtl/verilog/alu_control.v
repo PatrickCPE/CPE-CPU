@@ -1,13 +1,19 @@
-//-----------------------------------------------------------------------------
-// Header
-//-----------------------------------------------------------------------------
+//                              -*- Mode: Verilog -*-
+// Filename        : alu_control.v
+// Description     : alu control line generation
+// Author          : Patrick
+// Created On      : Fri Apr 15 16:10:53 2022
+// Last Modified By: Patrick
+// Last Modified On: Fri Apr 15 16:10:53 2022
+// Update Count    : 0
+// Status          : Unknown, Use with caution!
 
-`timescale 1ns/1ps
+
 
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module name ();
+module alu_control (/*AUTOARG*/) ;
 
    //-----------------------------------------------------------------------------
    // Inputs
@@ -37,4 +43,5 @@ module name ();
    // Assigns
    //-----------------------------------------------------------------------------
 
-endmodule // name
+endmodule // alu_control
+

@@ -9,34 +9,35 @@
 // Status          : Unknown, Use with caution!
 
 
-`timescale 1ns/1ps
-
-//-----------------------------------------------------------------------------
-// Parameters
-//-----------------------------------------------------------------------------
-parameter BUS_WIDTH = 32;
-parameter INSTRUCTION_WIDTH = 32;
-
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module cpe_cpu (/*AUTOARG*/ ) ;
+module cpe_cpu (/*AUTOARG*/
+   // Outputs
+   alu_w_o, reg_w_o, pc_w_o, mem_wr_w_o_h, mem_rd_w_o_h,
+   // Inputs
+   clk_w_i, res_w_i_h, instr_w_i
+   ) ;
 
    //-----------------------------------------------------------------------------
    // Inputs
    //-----------------------------------------------------------------------------
    input wire clk_w_i;
    input wire res_w_i_h;
-   input wire [(BUS_WIDTH - 1):0]instr_w_in;
+   input wire [31:0] instr_w_i;
 
    //-----------------------------------------------------------------------------
    // Outputs
    //-----------------------------------------------------------------------------
-   output wire [(BUS_WIDTH - 1):0] alu_w_o;
-   output wire [(BUS_WIDTH - 1):0] reg_w_o;
-   output wire [(INSTRUCTION_WIDTH - 1):0] pc_w_o;
+   output wire [31:0] alu_w_o;
+   output wire [31:0] reg_w_o;
+   output wire [31:0] pc_w_o;
    output wire                             mem_wr_w_o_h;
    output wire                             mem_rd_w_o_h;
+
+   //-----------------------------------------------------------------------------
+   // Parameters
+   //-----------------------------------------------------------------------------
 
    //-----------------------------------------------------------------------------
    // Internal Registers and Wires

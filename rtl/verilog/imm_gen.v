@@ -1,13 +1,18 @@
-//-----------------------------------------------------------------------------
-// Header
-//-----------------------------------------------------------------------------
+//                              -*- Mode: Verilog -*-
+// Filename        : imm_gen.v
+// Description     : generates immediate value for pc jumps
+// Author          : Patrick
+// Created On      : Fri Apr 15 17:21:26 2022
+// Last Modified By: Patrick
+// Last Modified On: Fri Apr 15 17:21:26 2022
+// Update Count    : 0
+// Status          : Unknown, Use with caution!
 
-`timescale 1ns/1ps
 
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module name ();
+module imm_gen (/*AUTOARG*/ ) ;
 
    //-----------------------------------------------------------------------------
    // Inputs
@@ -37,4 +42,4 @@ module name ();
    // Assigns
    //-----------------------------------------------------------------------------
 
-endmodule // name
+endmodule // imm_gen

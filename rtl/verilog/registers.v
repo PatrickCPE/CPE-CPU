@@ -1,13 +1,18 @@
-//-----------------------------------------------------------------------------
-// Header
-//-----------------------------------------------------------------------------
-
-`timescale 1ns/1ps
+//                              -*- Mode: Verilog -*-
+// Filename        : registers.v
+// Description     : register file for cpe cpu
+// Author          : Patrick
+// Created On      : Fri Apr 15 17:25:46 2022
+// Last Modified By: Patrick
+// Last Modified On: Fri Apr 15 17:25:46 2022
+// Update Count    : 0
+// Status          : Unknown, Use with caution!
 
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module name ();
+module registers (/*AUTOARG*/) ;
+
 
    //-----------------------------------------------------------------------------
    // Inputs
@@ -37,4 +42,5 @@ module name ();
    // Assigns
    //-----------------------------------------------------------------------------
 
-endmodule // name
+endmodule // registers
+

@@ -1,13 +1,19 @@
-//-----------------------------------------------------------------------------
-// Header
-//-----------------------------------------------------------------------------
+//                              -*- Mode: Verilog -*-
+// Filename        : control.v
+// Description     : contol signals for cpe cpu
+// Author          : Patrick
+// Created On      : Fri Apr 15 17:09:43 2022
+// Last Modified By: Patrick
+// Last Modified On: Fri Apr 15 17:09:43 2022
+// Update Count    : 0
+// Status          : Unknown, Use with caution!
 
-`timescale 1ns/1ps
 
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module name ();
+module control (/*AUTOARG*/ ) ;
+
 
    //-----------------------------------------------------------------------------
    // Inputs
@@ -37,4 +43,5 @@ module name ();
    // Assigns
    //-----------------------------------------------------------------------------
 
-endmodule // name
+endmodule // control
+
