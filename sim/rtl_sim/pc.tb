@@ -6,128 +6,128 @@
 :vpi_module "vhdl_sys";
 :vpi_module "v2005_math";
 :vpi_module "va_math";
-S_0x55d63e411480 .scope module, "pc_tb" "pc_tb" 2 16;
+S_0x55f485130480 .scope module, "pc_tb" "pc_tb" 2 16;
  .timescale -9 -12;
-P_0x55d63e3fd1f0 .param/l "TRACE" 0 2 30, +C4<00000000000000000000000000000001>;
-L_0x55d63e411030 .functor BUFZ 32, v0x55d63e43acf0_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
-L_0x55d63e43b260 .functor BUFZ 1, v0x55d63e43a840_0, C4<0>, C4<0>, C4<0>;
-L_0x55d63e43b340 .functor BUFZ 1, v0x55d63e43b060_0, C4<0>, C4<0>, C4<0>;
-v0x55d63e43a840_0 .var "clk_tb_i", 0 0;
-v0x55d63e43a900_0 .net "clk_w_i", 0 0, L_0x55d63e43b260;  1 drivers
-v0x55d63e43a9c0_0 .var/i "errors", 31 0;
-v0x55d63e43aa60_0 .var/i "i", 31 0;
-v0x55d63e43ab20_0 .net "instr_w_o", 31 0, L_0x55d63e40fc30;  1 drivers
-v0x55d63e43ac30_0 .var/i "num_trials", 31 0;
-v0x55d63e43acf0_0 .var "pc_tb_i", 31 0;
-v0x55d63e43add0_0 .net "pc_w_i", 31 0, L_0x55d63e411030;  1 drivers
-v0x55d63e43aec0_0 .var "prev_count", 31 0;
-v0x55d63e43af80_0 .var/i "res_done", 31 0;
-v0x55d63e43b060_0 .var "res_tb_i_h", 0 0;
-v0x55d63e43b120_0 .net "res_w_i_h", 0 0, L_0x55d63e43b340;  1 drivers
-E_0x55d63e425de0 .event posedge, v0x55d63e3e9220_0;
-S_0x55d63e3e9050 .scope module, "duv" "pc" 2 47, 3 19 0, S_0x55d63e411480;
+P_0x55f48511c1f0 .param/l "TRACE" 0 2 30, +C4<00000000000000000000000000000001>;
+L_0x55f485130030 .functor BUFZ 32, v0x55f485159cf0_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x55f48515a260 .functor BUFZ 1, v0x55f485159840_0, C4<0>, C4<0>, C4<0>;
+L_0x55f48515a340 .functor BUFZ 1, v0x55f48515a060_0, C4<0>, C4<0>, C4<0>;
+v0x55f485159840_0 .var "clk_tb_i", 0 0;
+v0x55f485159900_0 .net "clk_w_i", 0 0, L_0x55f48515a260;  1 drivers
+v0x55f4851599c0_0 .var/i "errors", 31 0;
+v0x55f485159a60_0 .var/i "i", 31 0;
+v0x55f485159b20_0 .net "instr_w_o", 31 0, L_0x55f48512ec30;  1 drivers
+v0x55f485159c30_0 .var/i "num_trials", 31 0;
+v0x55f485159cf0_0 .var "pc_tb_i", 31 0;
+v0x55f485159dd0_0 .net "pc_w_i", 31 0, L_0x55f485130030;  1 drivers
+v0x55f485159ec0_0 .var "prev_count", 31 0;
+v0x55f485159f80_0 .var/i "res_done", 31 0;
+v0x55f48515a060_0 .var "res_tb_i_h", 0 0;
+v0x55f48515a120_0 .net "res_w_i_h", 0 0, L_0x55f48515a340;  1 drivers
+E_0x55f485144de0 .event posedge, v0x55f485108220_0;
+S_0x55f485108050 .scope module, "duv" "pc" 2 47, 3 19 0, S_0x55f485130480;
  .timescale -9 -12;
     .port_info 0 /OUTPUT 32 "instr_w_o"
     .port_info 1 /INPUT 32 "pc_w_i"
     .port_info 2 /INPUT 1 "clk_w_i"
     .port_info 3 /INPUT 1 "res_w_i_h"
-L_0x55d63e40fc30 .functor BUFZ 32, v0x55d63e43a240_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
-v0x55d63e3e9220_0 .net "clk_w_i", 0 0, L_0x55d63e43b260;  alias, 1 drivers
-v0x55d63e43a240_0 .var "curr_instr_r", 31 0;
-v0x55d63e43a320_0 .net "instr_w_o", 31 0, L_0x55d63e40fc30;  alias, 1 drivers
-v0x55d63e43a3e0_0 .net "pc_w_i", 31 0, L_0x55d63e411030;  alias, 1 drivers
-v0x55d63e43a4c0_0 .net "res_w_i_h", 0 0, L_0x55d63e43b340;  alias, 1 drivers
-E_0x55d63e425b70 .event posedge, v0x55d63e43a4c0_0, v0x55d63e3e9220_0;
-S_0x55d63e43a650 .scope generate, "genblk1" "genblk1" 2 74, 2 74 0, S_0x55d63e411480;
+L_0x55f48512ec30 .functor BUFZ 32, v0x55f485159240_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x55f485108220_0 .net "clk_w_i", 0 0, L_0x55f48515a260;  alias, 1 drivers
+v0x55f485159240_0 .var "curr_instr_r", 31 0;
+v0x55f485159320_0 .net "instr_w_o", 31 0, L_0x55f48512ec30;  alias, 1 drivers
+v0x55f4851593e0_0 .net "pc_w_i", 31 0, L_0x55f485130030;  alias, 1 drivers
+v0x55f4851594c0_0 .net "res_w_i_h", 0 0, L_0x55f48515a340;  alias, 1 drivers
+E_0x55f485144b70 .event posedge, v0x55f4851594c0_0, v0x55f485108220_0;
+S_0x55f485159650 .scope generate, "genblk1" "genblk1" 2 74, 2 74 0, S_0x55f485130480;
  .timescale -9 -12;
-    .scope S_0x55d63e43a650;
+    .scope S_0x55f485159650;
 T_0 ;
     %vpi_call 2 76 "$dumpfile", "pc.vcd" {0 0 0};
     %vpi_call 2 77 "$dumpvars" {0 0 0};
     %end;
     .thread T_0;
-    .scope S_0x55d63e3e9050;
+    .scope S_0x55f485108050;
 T_1 ;
-    %wait E_0x55d63e425b70;
-    %load/vec4 v0x55d63e43a4c0_0;
+    %wait E_0x55f485144b70;
+    %load/vec4 v0x55f4851594c0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_1.0, 8;
     %pushi/vec4 0, 0, 32;
-    %assign/vec4 v0x55d63e43a240_0, 0;
+    %assign/vec4 v0x55f485159240_0, 0;
     %jmp T_1.1;
 T_1.0 ;
-    %load/vec4 v0x55d63e43a3e0_0;
-    %assign/vec4 v0x55d63e43a240_0, 0;
+    %load/vec4 v0x55f4851593e0_0;
+    %assign/vec4 v0x55f485159240_0, 0;
 T_1.1 ;
     %jmp T_1;
     .thread T_1;
-    .scope S_0x55d63e411480;
+    .scope S_0x55f485130480;
 T_2 ;
     %delay 1000, 0;
-    %load/vec4 v0x55d63e43a840_0;
+    %load/vec4 v0x55f485159840_0;
     %inv;
-    %store/vec4 v0x55d63e43a840_0, 0, 1;
+    %store/vec4 v0x55f485159840_0, 0, 1;
     %jmp T_2;
     .thread T_2;
-    .scope S_0x55d63e411480;
+    .scope S_0x55f485130480;
 T_3 ;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v0x55d63e43a840_0, 0, 1;
+    %store/vec4 v0x55f485159840_0, 0, 1;
     %pushi/vec4 0, 0, 32;
-    %store/vec4 v0x55d63e43a9c0_0, 0, 32;
+    %store/vec4 v0x55f4851599c0_0, 0, 32;
     %pushi/vec4 10000, 0, 32;
-    %store/vec4 v0x55d63e43ac30_0, 0, 32;
+    %store/vec4 v0x55f485159c30_0, 0, 32;
     %pushi/vec4 0, 0, 32;
-    %store/vec4 v0x55d63e43af80_0, 0, 32;
+    %store/vec4 v0x55f485159f80_0, 0, 32;
     %delay 10000, 0;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v0x55d63e43b060_0, 0, 1;
+    %store/vec4 v0x55f48515a060_0, 0, 1;
     %delay 10000, 0;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v0x55d63e43b060_0, 0, 1;
+    %store/vec4 v0x55f48515a060_0, 0, 1;
     %delay 10000, 0;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v0x55d63e43b060_0, 0, 1;
+    %store/vec4 v0x55f48515a060_0, 0, 1;
     %pushi/vec4 0, 0, 32;
-    %store/vec4 v0x55d63e43aa60_0, 0, 32;
+    %store/vec4 v0x55f485159a60_0, 0, 32;
 T_3.0 ;
-    %load/vec4 v0x55d63e43aa60_0;
-    %load/vec4 v0x55d63e43ac30_0;
+    %load/vec4 v0x55f485159a60_0;
+    %load/vec4 v0x55f485159c30_0;
     %cmp/s;
     %jmp/0xz T_3.1, 5;
     %vpi_func 2 93 "$urandom" 32 {0 0 0};
-    %store/vec4 v0x55d63e43acf0_0, 0, 32;
-    %wait E_0x55d63e425de0;
-    %load/vec4 v0x55d63e43ab20_0;
-    %load/vec4 v0x55d63e43aec0_0;
+    %store/vec4 v0x55f485159cf0_0, 0, 32;
+    %wait E_0x55f485144de0;
+    %load/vec4 v0x55f485159b20_0;
+    %load/vec4 v0x55f485159ec0_0;
     %cmp/e;
     %flag_get/vec4 6;
     %inv;
     %pad/u 32;
-    %load/vec4 v0x55d63e43af80_0;
+    %load/vec4 v0x55f485159f80_0;
     %and;
     %cmpi/ne 0, 0, 32;
     %jmp/0xz  T_3.2, 4;
-    %load/vec4 v0x55d63e43ab20_0;
-    %load/vec4 v0x55d63e43add0_0;
+    %load/vec4 v0x55f485159b20_0;
+    %load/vec4 v0x55f485159dd0_0;
     %cmp/ne;
     %jmp/0xz  T_3.4, 6;
-    %vpi_call 2 97 "$display", "%d ns: expected:%h received:%h prev_count:%h\012", $time, v0x55d63e43ab20_0, v0x55d63e43add0_0, v0x55d63e43aec0_0 {0 0 0};
-    %load/vec4 v0x55d63e43a9c0_0;
+    %vpi_call 2 97 "$display", "%d ns: expected:%h received:%h prev_count:%h\012", $time, v0x55f485159b20_0, v0x55f485159dd0_0, v0x55f485159ec0_0 {0 0 0};
+    %load/vec4 v0x55f4851599c0_0;
     %addi 1, 0, 32;
-    %assign/vec4 v0x55d63e43a9c0_0, 0;
+    %assign/vec4 v0x55f4851599c0_0, 0;
 T_3.4 ;
 T_3.2 ;
-    %load/vec4 v0x55d63e43ab20_0;
-    %assign/vec4 v0x55d63e43aec0_0, 0;
+    %load/vec4 v0x55f485159b20_0;
+    %assign/vec4 v0x55f485159ec0_0, 0;
     %pushi/vec4 1, 0, 32;
-    %assign/vec4 v0x55d63e43af80_0, 0;
-    %load/vec4 v0x55d63e43aa60_0;
+    %assign/vec4 v0x55f485159f80_0, 0;
+    %load/vec4 v0x55f485159a60_0;
     %addi 1, 0, 32;
-    %store/vec4 v0x55d63e43aa60_0, 0, 32;
+    %store/vec4 v0x55f485159a60_0, 0, 32;
     %jmp T_3.0;
 T_3.1 ;
-    %vpi_call 2 105 "$display", "%d ns: finished with %d errors over %d trials\012", $time, v0x55d63e43a9c0_0, v0x55d63e43ac30_0 {0 0 0};
+    %vpi_call 2 105 "$display", "%d ns: finished with %d errors over %d trials\012", $time, v0x55f4851599c0_0, v0x55f485159c30_0 {0 0 0};
     %vpi_call 2 106 "$finish" {0 0 0};
     %end;
     .thread T_3;
