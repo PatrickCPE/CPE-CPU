@@ -71,11 +71,9 @@ module pc_tb (/*AUTOARG*/) ;
       #1 clk_tb_i = ~clk_tb_i;
    end
 
-   if (TRACE == 1) begin
-      initial begin
-         $dumpfile("pc.vcd");
-         $dumpvars;
-      end
+   if (TRACE == 1) initial begin
+      $dumpfile("pc.vcd");
+      $dumpvars;
    end
 
    integer i, errors, num_trials, res_done;
@@ -84,8 +82,9 @@ module pc_tb (/*AUTOARG*/) ;
       clk_tb_i       = 0;
       errors         = 0;
       num_trials     = 10_000;
-      res_done = 0;
-      // Asert Reset at start
+      res_done       = 0;
+
+      // Asert Reset
       #10 res_tb_i_h = 0;
       #10 res_tb_i_h = 1;
       #10 res_tb_i_h = 0;
