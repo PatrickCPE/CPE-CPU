@@ -83,6 +83,25 @@ module imm_gen_tb (/*AUTOARG*/) ;
       end
    endtask // gen_i_expected
 
+   task gen_s_expected(input [6:0] instr, input [2:0] instr_type);
+      begin
+         rand_val     = $random;
+         test_instr   = {rand_val[11:5],  5'b00000, 5'b00000, 3'b000, rand_val[4:0], instr};
+         instr_tb_i   = test_instr;
+         expected_val = {{20{rand_val[11]}}, rand_val[11:5], rand_val[4:0]};
+      end
+   endtask // gen_s_expected
+
+   task gen_u_expected(input [6:0] instr, input [2:0] instr_type);
+      begin
+         rand_val     = $random;
+         test_instr   = {rand_val[19:0], 5'b00000, instr};
+         instr_tb_i   = test_instr;
+         expected_val = {rand_val[19:0], {12{1'b0}}};
+         //expected_val = 1;
+      end
+   endtask // gen_u_expected
+
    task test_instruction(input [6:0] instr, input [2:0] instr_type);
       begin
          #DELAY;
@@ -92,8 +111,10 @@ module imm_gen_tb (/*AUTOARG*/) ;
                J: begin
                end
                U: begin
+                  gen_u_expected(instr, instr_type);
                end
                S: begin
+                  gen_s_expected(instr, instr_type);
                end
                B: begin
                   gen_b_expected(instr, instr_type);
@@ -108,7 +129,7 @@ module imm_gen_tb (/*AUTOARG*/) ;
 
             #DELAY;
             if (imm_w_o !== expected_val) begin
-               $display("%d ns: I Type Fail Expected:%b Received:%b\n", $time, expected_val, imm_w_o);
+               $display("%d ns: ERROR Expected:%b Received:%b\n", $time, expected_val, imm_w_o);
                errors = errors + 1;
             end
          end // for (i = 0; i < NUM_TRIALS; i = i + 1)
@@ -138,7 +159,14 @@ module imm_gen_tb (/*AUTOARG*/) ;
       //test_instruction(7'b0010011, I); // ADDI
 
       // B type instructions
-      test_instruction(7'b1100011, B); // BEQ
+      //test_instruction(7'b1100011, B); // BEQ
+
+      // S type instructions
+      //test_instruction(7'b0100011, S); // SB
+
+      // U type instructions
+      test_instruction(7'b0110111, U); // LUI
+
       $display("%d ns: finished with %d errors over %d trials\n", $time, errors, NUM_TRIALS);
    end
 
