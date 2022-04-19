@@ -98,9 +98,17 @@ module imm_gen_tb (/*AUTOARG*/) ;
          test_instr   = {rand_val[19:0], 5'b00000, instr};
          instr_tb_i   = test_instr;
          expected_val = {rand_val[19:0], {12{1'b0}}};
-         //expected_val = 1;
       end
    endtask // gen_u_expected
+
+   task gen_j_expected(input [6:0] instr, input [2:0] instr_type);
+      begin
+         rand_val     = $random;
+         test_instr   = {rand_val[19:0], 5'b00000, instr};
+         instr_tb_i   = test_instr;
+         expected_val = {{11{1'b0}}, rand_val[19], rand_val[7:0], rand_val[8], rand_val[18:9], 1'b0};
+      end
+   endtask // gen_j_expected
 
    task test_instruction(input [6:0] instr, input [2:0] instr_type);
       begin
@@ -109,6 +117,7 @@ module imm_gen_tb (/*AUTOARG*/) ;
             #DELAY;
             case (instr_type)
                J: begin
+                  gen_j_expected(instr, instr_type);
                end
                U: begin
                   gen_u_expected(instr, instr_type);
@@ -154,18 +163,22 @@ module imm_gen_tb (/*AUTOARG*/) ;
       #DELAY;
       errors = 0;
       // I type instructions
-      //test_instruction(7'b1100111, I); // JALR
-      //test_instruction(7'b0000011, I); // LB
-      //test_instruction(7'b0010011, I); // ADDI
+      test_instruction(7'b1100111, I); // JALR
+      test_instruction(7'b0000011, I); // LB
+      test_instruction(7'b0010011, I); // ADDI
 
       // B type instructions
-      //test_instruction(7'b1100011, B); // BEQ
+      test_instruction(7'b1100011, B); // BEQ
 
       // S type instructions
-      //test_instruction(7'b0100011, S); // SB
+      test_instruction(7'b0100011, S); // SB
 
       // U type instructions
       test_instruction(7'b0110111, U); // LUI
+      test_instruction(7'b0010111, U); // AUIPC
+
+      // J type instructions
+      test_instruction(7'b1101111, J); // JAL
 
       $display("%d ns: finished with %d errors over %d trials\n", $time, errors, NUM_TRIALS);
    end
