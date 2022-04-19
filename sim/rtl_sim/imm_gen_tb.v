@@ -65,6 +65,15 @@ module imm_gen_tb (/*AUTOARG*/) ;
    //-----------------------------------------------------------------------------
    // Tasks
    //-----------------------------------------------------------------------------
+   task gen_b_expected(input [6:0] instr, input [2:0] instr_type);
+      begin
+         rand_val     = $random;
+         test_instr   = {rand_val[12:5], 5'b00000, 5'b00000, 3'b000, rand_val[4:0], instr};
+         instr_tb_i   = test_instr;
+         expected_val = {{19{rand_val[11]}}, rand_val[11], rand_val[0], rand_val[10:5], rand_val[4:1], 1'b0};
+      end
+   endtask // gen_b_expected
+
    task gen_i_expected(input [6:0] instr, input [2:0] instr_type);
       begin
          rand_val     = $random;
@@ -72,7 +81,7 @@ module imm_gen_tb (/*AUTOARG*/) ;
          instr_tb_i   = test_instr;
          expected_val = {{20{rand_val[11]}}, rand_val[11:0]};
       end
-   endtask
+   endtask // gen_i_expected
 
    task test_instruction(input [6:0] instr, input [2:0] instr_type);
       begin
@@ -87,6 +96,7 @@ module imm_gen_tb (/*AUTOARG*/) ;
                S: begin
                end
                B: begin
+                  gen_b_expected(instr, instr_type);
                end
                I: begin
                   gen_i_expected(instr, instr_type);
@@ -123,9 +133,12 @@ module imm_gen_tb (/*AUTOARG*/) ;
       #DELAY;
       errors = 0;
       // I type instructions
-      test_instruction(7'b1100111, I); // JALR
-      test_instruction(7'b0000011, I); // LB
-      test_instruction(7'b0010011, I); // ADDI
+      //test_instruction(7'b1100111, I); // JALR
+      //test_instruction(7'b0000011, I); // LB
+      //test_instruction(7'b0010011, I); // ADDI
+
+      // B type instructions
+      test_instruction(7'b1100011, B); // BEQ
       $display("%d ns: finished with %d errors over %d trials\n", $time, errors, NUM_TRIALS);
    end
 

@@ -68,7 +68,6 @@ module imm_gen (/*AUTOARG*/
          imm_r = 2;
       end else if (opcode_r == B_TYPE) begin
          imm_r = {{19{instr_w_i[31]}}, instr_w_i[31], instr_w_i[7], instr_w_i[30:25], instr_w_i[11:8], 1'b0};
-         imm_r = 1;
       end else begin // I_TYPE or a don't care
          imm_r = {{20{instr_w_i[31]}}, instr_w_i[31:20]};
       end
