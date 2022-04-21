@@ -1,8 +1,4 @@
-all: alu_control alu control cpe_cpu imm_gen pc registers
-
-alu_control:
-	iverilog -o alu_control.tb alu_control_tb.v ../../rtl/verilog/alu_control.v
-	vvp alu_control.tb
+all: alu control cpe_cpu imm_gen pc registers
 
 alu:
 	iverilog -o alu.tb alu_tb.v ../../rtl/verilog/alu.v
@@ -27,9 +23,6 @@ pc:
 registers:
 	iverilog -o registers.tb registers_tb.v ../../rtl/verilog/registers.v
 	vvp registers.tb
-
-alu_control_wave: alu_control
-	gtkwave alu_control.vcd
 
 alu_wave: alu
 	gtkwave alu.vcd

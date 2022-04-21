@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------
 module cpe_cpu (/*AUTOARG*/
    // Outputs
-   alu_w_o, reg_w_o, pc_w_o, mem_wr_w_o_h, mem_rd_w_o_h,
+   alu_w_o, reg_w_o, pc_w_o, mem_wr_w_o_h, mem_rd_w_o_h, mem_byte_sel_w_o,
    // Inputs
    clk_w_i, res_w_i_h, instr_w_i
    ) ;
@@ -34,6 +34,7 @@ module cpe_cpu (/*AUTOARG*/
    output wire [31:0] pc_w_o;
    output wire                             mem_wr_w_o_h;
    output wire                             mem_rd_w_o_h;
+   output wire [1:0]                       mem_byte_sel_w_o;
 
    //-----------------------------------------------------------------------------
    // Parameters

@@ -88,11 +88,12 @@ module alu_tb (/*AUTOARG*/) ;
                end
             end
             4'b0001: begin      // SLL
-               expected_val = a_val << b_val;
+               expected_val = a_val << b_val[4:0];
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A << B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A << B[4:0];\nExpected:%h\nReceived:h\n", $time, expected_val,
+                           alu_res_w_o);
                end
             end
             4'b0010: begin      // SLT
@@ -100,29 +101,31 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A < B ? 1 : 0;\nExpected:%h\nReceived:h\n", $time,
+                           expected_val, alu_res_w_o);
                end
             end
             4'b0011: begin      // SLTU
                expected_val = (a_val < b_val) ? 1 : 0;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A < B UNSIGNED;\nExpected:%h\nReceived:h\n", $time,
+                           expected_val, alu_res_w_o);
                end
             end
             4'b0100: begin      // XOR
                expected_val = a_val ^ b_val;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A ^ B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0101: begin      // SRL
-               expected_val = a_val >> b_val;
+               expected_val = a_val >> b_val[4:0];
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A >> B[4:0];\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0110: begin      // OR
@@ -130,7 +133,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A | B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0111: begin      // AND
@@ -139,7 +142,7 @@ module alu_tb (/*AUTOARG*/) ;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A & B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b1000: begin      // SUB
@@ -147,15 +150,15 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A - B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b1101: begin      // SRA
-               expected_val = a_val >>> b_val;
+               expected_val = a_val >>> b_val[4:0];
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A >>> B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
                end
             end
             default: begin
