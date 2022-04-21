@@ -1,4 +1,4 @@
-all: alu control cpe_cpu imm_gen pc registers
+all: alu control cpe_cpu imm_gen pc registers cond_branch_control
 
 alu:
 	iverilog -o alu.tb alu_tb.v ../../rtl/verilog/alu.v
@@ -24,6 +24,10 @@ registers:
 	iverilog -o registers.tb registers_tb.v ../../rtl/verilog/registers.v
 	vvp registers.tb
 
+cond_branch_control:
+	iverilog -o cond_branch_control.tb cond_branch_control_tb.v ../../rtl/verilog/cond_branch_control.v
+	vvp cond_branch_control.tb
+
 alu_wave: alu
 	gtkwave alu.vcd
 
@@ -41,6 +45,9 @@ pc_wave: pc
 
 registers_wave: registers
 	gtkwave registers.vcd
+
+cond_branch_control_wave: cond_branch_control
+	gtkwave cond_branch_control.vcd
 
 clean:
 	rm -f *.tb *.vcd
