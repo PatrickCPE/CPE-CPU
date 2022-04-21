@@ -13,7 +13,7 @@
 //-----------------------------------------------------------------------------
 // Module Declaration
 //-----------------------------------------------------------------------------
-module alu_tb (/*AUTOARG*/) ;
+module cond_branch_control_tb (/*AUTOARG*/) ;
 
    //-----------------------------------------------------------------------------
    // Inputs
@@ -67,5 +67,5 @@ module alu_tb (/*AUTOARG*/) ;
       $display("%d ns: finished with %d errors\n", $time, errors);
    end
 
-endmodule // alu_tb
+endmodule // cond_branch_control_tb
 
