@@ -43,7 +43,11 @@ module alu_tb (/*AUTOARG*/) ;
 
 
    wire [31:0]        alu_res_w_o;
-   wire               zero_w_o_h;
+   wire               eq_w_o_h;
+   wire               gtes_w_o_h;
+   wire               lts_w_o_h;
+   wire               gteu_w_o_h;
+   wire               ltu_w_o_h;
 
    //-----------------------------------------------------------------------------
    // Instantiations
@@ -51,7 +55,11 @@ module alu_tb (/*AUTOARG*/) ;
    alu duv(/*AUTOINST*/
            // Outputs
            .alu_res_w_o                 (alu_res_w_o),
-           .zero_w_o_h                  (zero_w_o_h),
+           .eq_w_o_h                    (eq_w_o_h),
+           .gteu_w_o_h                  (gteu_w_o_h),
+           .ltu_w_o_h                   (ltu_w_o_h),
+           .gtes_w_o_h                  (gtes_w_o_h),
+           .lts_w_o_h                   (lts_w_o_h),
            // Inputs
            .a_data_w_i                  (a_data_w_i),
            .b_data_w_i                  (b_data_w_i),
@@ -166,12 +174,39 @@ module alu_tb (/*AUTOARG*/) ;
                $display("%d ns: FATAL INVALID ALU INSTR:%b\n", $time, instr);
             end
          endcase // case (instr)
-         #DELAY
-         if ((alu_res_w_o == 0) && (zero_w_o_h != 1)) begin
+         #DELAY;
+
+         // Comparison Flags
+         if ((a_val == b_val) & (!eq_w_o_h)) begin
             errors = errors + 1;
             $display("%d ns: Error Zero Flag Failure Instr:%b Res:%h Flag:%b\n", $time, instr,
-                     alu_res_w_o, zero_w_o_h);
+                     alu_res_w_o, eq_w_o_h);
          end
+
+         if ((a_val < b_val) & (!ltu_w_o_h)) begin
+            errors = errors + 1;
+            $display("%d ns: Error Less Than Unsigned Flag Failure Instr:%b Res:%h Flag:%b\n", $time, instr,
+                     alu_res_w_o, ltu_w_o_h);
+         end
+
+         if (($signed(a_val) < $signed(b_val)) & (!lts_w_o_h)) begin
+            errors = errors + 1;
+            $display("%d ns: Error Less Than signed Flag Failure Instr:%b Res:%h Flag:%b\n", $time, instr,
+                     alu_res_w_o, lts_w_o_h);
+         end
+
+         if ((a_val >= b_val) & (!gteu_w_o_h)) begin
+            errors = errors + 1;
+            $display("%d ns: Error Greater Than Equal signed Flag Failure Instr:%b Res:%h Flag:%b\n", $time, instr,
+                     alu_res_w_o, gtes_w_o_h);
+         end
+
+         if (($signed(a_val) >= $signed(b_val)) & (!gtes_w_o_h)) begin
+            errors = errors + 1;
+            $display("%d ns: Error Greater Than Equal signed Flag Failure Instr:%b Res:%h Flag:%b\n", $time, instr,
+                     alu_res_w_o, gtes_w_o_h);
+         end
+
       end
    endtask
 

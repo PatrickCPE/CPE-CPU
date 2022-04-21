@@ -15,7 +15,7 @@
 //-----------------------------------------------------------------------------
 module alu (/*AUTOARG*/
    // Outputs
-   alu_res_w_o, zero_w_o_h,
+   alu_res_w_o, eq_w_o_h, gteu_w_o_h, ltu_w_o_h, gtes_w_o_h, lts_w_o_h,
    // Inputs
    a_data_w_i, b_data_w_i, alu_control_w_i
    ) ;
@@ -31,7 +31,11 @@ module alu (/*AUTOARG*/
    // Outputs
    //-----------------------------------------------------------------------------
    output wire [31:0] alu_res_w_o;
-   output wire        zero_w_o_h;
+   output             eq_w_o_h;
+   output             gteu_w_o_h;
+   output             ltu_w_o_h;
+   output             gtes_w_o_h;
+   output             lts_w_o_h;
 
    //-----------------------------------------------------------------------------
    // Parameters
@@ -68,7 +72,11 @@ module alu (/*AUTOARG*/
    //-----------------------------------------------------------------------------
    // Assigns
    //-----------------------------------------------------------------------------
-   assign zero_w_o_h = (alu_res_w_o == 0);
+   assign eq_w_o_h = (alu_res_w_o == 0);
+   assign gteu_w_o_h = ((a_data_w_i > b_data_w_i) ? 1 : 0);
+   assign ltu_w_o_h = ((a_data_w_i < b_data_w_i) ? 1 : 0);
+   assign gtes_w_o_h = (($signed(a_data_w_i) > $signed(b_data_w_i)) ? 1 : 0);
+   assign lts_w_o_h = (($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0);
    assign alu_res_w_o = alu_res_r;
 
 endmodule // alu
