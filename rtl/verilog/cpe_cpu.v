@@ -79,8 +79,8 @@ module cpe_cpu (/*AUTOARG*/
 
    // ALU
    // Input
-   wire [31:0]                             a_data_w_i; // TODO ASSIGN
-   wire [31:0]                             b_data_w_i; // TODO ASSIGN
+   wire [31:0]                             a_data_w_i;
+   wire [31:0]                             b_data_w_i;
    wire [3:0]                              alu_control_w_i;
    // Output
    wire [31:0]                             alu_res_w_o;
@@ -221,6 +221,10 @@ module cpe_cpu (/*AUTOARG*/
    assign wr_data_w_i = imm_to_reg_w_o_h ? imm_w_o : imm_or_res_w_i;
    assign imm_or_res_w_i = pc_to_reg_w_o_h ? (instr_w_o + 4) : alu_mem_w_i;
    assign alu_mem_w_i = mem_to_reg_w_o_h ? mem_data_w_o : alu_res_w_o;
+
+   // Mem Byte/HW/Word Select
+   assign mem_wr_byte_sel_w_o = instr_w_i[14:12];
+   assign mem_rd_byte_sel_w_o = instr_w_i[14:12];
 
 endmodule // cpe_cpu
 
