@@ -31,11 +31,11 @@ module alu (/*AUTOARG*/
    // Outputs
    //-----------------------------------------------------------------------------
    output wire [31:0] alu_res_w_o;
-   output             eq_w_o_h;
-   output             gteu_w_o_h;
-   output             ltu_w_o_h;
-   output             gtes_w_o_h;
-   output             lts_w_o_h;
+   output wire        eq_w_o_h;
+   output wire        gteu_w_o_h;
+   output wire        ltu_w_o_h;
+   output wire        gtes_w_o_h;
+   output wire        lts_w_o_h;
 
    //-----------------------------------------------------------------------------
    // Parameters
