@@ -9,7 +9,7 @@ control:
 	vvp control.tb
 
 cpe_cpu:
-	iverilog -o cpe_cpu.tb cpe_cpu_tb.v ../../rtl/verilog/cpe_cpu.v
+	iverilog -o cpe_cpu.tb cpe_cpu_tb.v ../../rtl/verilog/cpe_cpu.v ../../rtl/verilog/alu.v ../../rtl/verilog/control.v ../../rtl/verilog/imm_gen.v ../../rtl/verilog/pc.v ../../rtl/verilog/registers.v ../../rtl/verilog/cond_branch_control.v
 	vvp cpe_cpu.tb
 
 imm_gen:

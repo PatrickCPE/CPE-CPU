@@ -102,6 +102,10 @@ module cpe_cpu (/*AUTOARG*/
    // Output
    wire                                    cond_branch_w_o_h;
 
+   // Data Into Register Intermediates
+   wire [31:0]                             alu_mem_w_i;
+   wire [31:0]                             imm_or_res_w_i;
+
 
    //-----------------------------------------------------------------------------
    // Instantiations
@@ -186,7 +190,10 @@ module cpe_cpu (/*AUTOARG*/
    // Assigns
    //-----------------------------------------------------------------------------
    // PC
-   assign pc_w_i = 0;           // TODO REALT
+   assign pc_w_i = branch_res ? alu_res_w_o : (instr_w_o + 4);
+
+   // PC Branch Intermediates
+   assign branch_res = branch_w_o_h & (jal_w_o_h | cond_branch_w_o_h);
 
    // REGISTERS
    assign rd_reg_1_w_i = instr_w_i[19:15];
@@ -197,8 +204,8 @@ module cpe_cpu (/*AUTOARG*/
    assign opcode_w_i = instr_w_i[6:0];
 
    // ALU
-   assign a_data_w_i = 0; // TODO ASSIGN
-   assign b_data_w_i = 0; // TODO ASSIGN
+   assign a_data_w_i = alu_src_a_w_o ? instr_w_o : rd_data_1_w_o;
+   assign b_data_w_i = alu_src_b_w_o ? imm_w_o : rd_data_2_w_o;
    assign alu_control_w_i = {instr_w_i[30], instr_w_i[14:12]};
 
    // CONTROL - CONDITIONAL BRANCH
@@ -209,6 +216,11 @@ module cpe_cpu (/*AUTOARG*/
    assign ltu_w_i_h = ltu_w_o_h;
    assign lts_w_i_h = lts_w_o_h;
    assign cmp_branch_w_i_h = cmp_branch_w_o_h;
+
+   // Data Into Register Intermediates
+   assign wr_data_w_i = imm_to_reg_w_o_h ? imm_w_o : imm_or_res_w_i;
+   assign imm_or_res_w_i = pc_to_reg_w_o_h ? (instr_w_o + 4) : alu_mem_w_i;
+   assign alu_mem_w_i = mem_to_reg_w_o_h ? mem_data_w_o : alu_res_w_o;
 
 endmodule // cpe_cpu
 

@@ -164,7 +164,9 @@ module registers_tb (/*AUTOARG*/) ;
             end else begin
                // Update expected result
                if (reg_wr_flag_tb_i) begin
-                  expected_res[wr_reg_w_i] <= wr_data_w_i;
+                  if (wr_reg_w_i != 0) begin// All registers besides zero reg
+                     expected_res[wr_reg_w_i] <= wr_data_w_i;
+                  end
                end
                if (expected_res[rd_reg_1_w_i] !== rd_data_1_w_o) begin
                   $display("%d ns: reg_1 error expected:%h received:%h internal reg:%h\n", $time,
@@ -199,7 +201,9 @@ module registers_tb (/*AUTOARG*/) ;
             end else begin
                // Update expected result
                if (reg_wr_flag_tb_i) begin
-                  expected_res[wr_reg_w_i] <= wr_data_w_i;
+                  if (wr_reg_w_i != 0) begin// All registers besides zero reg
+                     expected_res[wr_reg_w_i] <= wr_data_w_i;
+                  end
                end
                if (expected_res[rd_reg_1_w_i] !== rd_data_1_w_o) begin
                   $display("%d ns: reg_1 error expected:%h received:%h internal reg:%h\n", $time,
