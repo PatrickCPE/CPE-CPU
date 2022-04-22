@@ -63,7 +63,9 @@ module registers (/*AUTOARG*/
          end
       end else begin
          if (reg_wr_flag_w_i) begin
-            register[wr_reg_w_i] <= wr_data_w_i;
+            if (wr_reg_w_i != 0) begin// All registers besides zero reg
+               register[wr_reg_w_i] <= wr_data_w_i;
+            end
          end
       end
    end
