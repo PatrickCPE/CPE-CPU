@@ -135,7 +135,7 @@ module control (/*AUTOARG*/
             jal_r_h = 1'b0;
             imm_to_reg_r_h = 1'b0;
             alu_src_a_r    = 1'b0;
-            alu_src_b_r    = 1'b0;
+            alu_src_b_r    = 1'b1;
             pc_to_reg_r    = 1'b0;
             cmp_branch_r_h = 1'b0;
          end

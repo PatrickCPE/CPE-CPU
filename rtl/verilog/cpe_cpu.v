@@ -84,6 +84,7 @@ module cpe_cpu (/*AUTOARG*/
    wire [31:0]                             b_data_w_i;
    wire [3:0]                              alu_control_w_i;
    wire                                    addi_sub_flag;
+   wire                                    store_force_add_flag_w_i;
    // Output
    wire [31:0]                             alu_res_w_o;
    wire                                    eq_w_o_h;
@@ -109,6 +110,7 @@ module cpe_cpu (/*AUTOARG*/
    wire [31:0]                             imm_or_res_w_i;
 
 
+
    //-----------------------------------------------------------------------------
    // Instantiations
    //-----------------------------------------------------------------------------
@@ -125,7 +127,8 @@ module cpe_cpu (/*AUTOARG*/
              .a_data_w_i                (a_data_w_i),
              .b_data_w_i                (b_data_w_i),
              .alu_control_w_i           (alu_control_w_i),
-             .addi_sub_flag_w_i         (addi_sub_flag_w_i));
+             .addi_sub_flag_w_i         (addi_sub_flag_w_i),
+             .store_force_add_flag_w_i  (store_force_add_flag_w_i));
 
    cond_branch_control cbc_0(/*AUTOINST*/
                              // Outputs
@@ -212,6 +215,7 @@ module cpe_cpu (/*AUTOARG*/
    assign b_data_w_i = alu_src_b_w_o ? imm_w_o : rd_data_2_w_o;
    assign alu_control_w_i = {instr_w_i[30], instr_w_i[14:12]};
    assign addi_sub_flag_w_i = instr_w_i[5];
+   assign store_force_add_flag_w_i = ((instr_w_i[6:0] == 7'b0100011) | (instr_w_i[6:0] == 7'b0000011));
 
    // CONTROL - CONDITIONAL BRANCH
    assign funct_3_w_i = instr_w_i[14:12];

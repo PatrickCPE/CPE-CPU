@@ -37,12 +37,13 @@ module alu_tb (/*AUTOARG*/) ;
    reg [31:0]         b_data_tb_i;
    reg [3:0]          alu_control_tb_i;
    reg               addi_sub_flag_tb_i;
+   reg store_force_add_flag_tb_i;
 
    wire [31:0]        a_data_w_i;
    wire [31:0]        b_data_w_i;
    wire [3:0]         alu_control_w_i;
    wire               addi_sub_flag_w_i;
-
+   wire               store_force_add_flag_w_i;
 
    wire [31:0]        alu_res_w_o;
    wire               eq_w_o_h;
@@ -66,7 +67,8 @@ module alu_tb (/*AUTOARG*/) ;
            .a_data_w_i                  (a_data_w_i),
            .b_data_w_i                  (b_data_w_i),
            .alu_control_w_i             (alu_control_w_i),
-           .addi_sub_flag_w_i           (addi_sub_flag_w_i));
+           .addi_sub_flag_w_i           (addi_sub_flag_w_i),
+           .store_force_add_flag_w_i    (store_force_add_flag_w_i));
 
    //-----------------------------------------------------------------------------
    // RTL
@@ -79,6 +81,7 @@ module alu_tb (/*AUTOARG*/) ;
    assign b_data_w_i = b_data_tb_i;
    assign alu_control_w_i = alu_control_tb_i;
    assign addi_sub_flag_w_i = addi_sub_flag_tb_i;
+   assign store_force_add_flag_w_i = store_force_add_flag_tb_i;
 
    //-----------------------------------------------------------------------------
    // Tasks
@@ -89,99 +92,109 @@ module alu_tb (/*AUTOARG*/) ;
          b_data_tb_i      = b_val;
          alu_control_tb_i = instr;
          #DELAY;
-
-         case (instr)
-            4'b0000: begin      // Add
-               expected_val = a_val + b_val;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A + B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b0001: begin      // SLL
-               expected_val = a_val << b_val[4:0];
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A << B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val,
-                           alu_res_w_o);
-               end
-            end
-            4'b0010: begin      // SLT
-               expected_val = ($signed(a_val) < $signed(b_val)) ? 1 : 0;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A < B ? 1 : 0;\nExpected:%h\nReceived:%h\n", $time,
-                           expected_val, alu_res_w_o);
-               end
-            end
-            4'b0011: begin      // SLTU
-               expected_val = (a_val < b_val) ? 1 : 0;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A < B UNSIGNED;\nExpected:%h\nReceived:%h\n", $time,
-                           expected_val, alu_res_w_o);
-               end
-            end
-            4'b0100: begin      // XOR
-               expected_val = a_val ^ b_val;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A ^ B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b0101: begin      // SRL
-               expected_val = a_val >> b_val[4:0];
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A >> B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b0110: begin      // OR
-               expected_val = a_val | b_val;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A | B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b0111: begin      // AND
-               expected_val = a_val & b_val;
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  errors = errors + 1;
-                  $display("%d ns: Error A & B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b1000: begin      // SUB
-               if (addi_sub_flag_w_i == 1) begin
-                  expected_val       = a_val - b_val;
-               end else begin
-                  expected_val       = a_val + b_val; // Special Case for ADDI
-               end
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A - B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            4'b1101: begin      // SRA
-               expected_val = a_val >>> b_val[4:0];
-               #DELAY;
-               if (alu_res_w_o !== expected_val) begin
-                  errors = errors + 1;
-                  $display("%d ns: Error A >>> B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
-               end
-            end
-            default: begin
+         if (store_force_add_flag_w_i) begin
+            expected_val = a_val + b_val;
+            #DELAY;
+            if (alu_res_w_o !== expected_val) begin
                errors = errors + 1;
-               $display("%d ns: FATAL INVALID ALU INSTR:%b\n", $time, instr);
+               $display("%d ns: Error Store Force Add A + B;\nExpected:%h\nReceived:%h\n", $time, expected_val,
+                        alu_res_w_o);
             end
-         endcase // case (instr)
+         end else begin
+            case (instr)
+               4'b0000: begin      // Add
+                  expected_val = a_val + b_val;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A + B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0001: begin      // SLL
+                  expected_val = a_val << b_val[4:0];
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A << B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val,
+                              alu_res_w_o);
+                  end
+               end
+               4'b0010: begin      // SLT
+                  expected_val = ($signed(a_val) < $signed(b_val)) ? 1 : 0;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A < B ? 1 : 0;\nExpected:%h\nReceived:%h\n", $time,
+                              expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0011: begin      // SLTU
+                  expected_val = (a_val < b_val) ? 1 : 0;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     $display("%d ns: Error A < B UNSIGNED;\nExpected:%h\nReceived:%h\n", $time,
+                              expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0100: begin      // XOR
+                  expected_val = a_val ^ b_val;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     $display("%d ns: Error A ^ B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0101: begin      // SRL
+                  expected_val = a_val >> b_val[4:0];
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A >> B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0110: begin      // OR
+                  expected_val = a_val | b_val;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A | B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b0111: begin      // AND
+                  expected_val = a_val & b_val;
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     errors = errors + 1;
+                     $display("%d ns: Error A & B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b1000: begin      // SUB
+                  if (addi_sub_flag_w_i == 1) begin
+                     expected_val       = a_val - b_val;
+                  end else begin
+                     expected_val       = a_val + b_val; // Special Case for ADDI
+                  end
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A - B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               4'b1101: begin      // SRA
+                  expected_val = $signed(a_val) >>> b_val[4:0];
+                  #DELAY;
+                  if (alu_res_w_o !== expected_val) begin
+                     errors = errors + 1;
+                     $display("%d ns: Error A >>> B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
+                  end
+               end
+               default: begin
+                  errors = errors + 1;
+                  $display("%d ns: FATAL INVALID ALU INSTR:%b\n", $time, instr);
+               end
+            endcase // case (instr)
+
+         end
          #DELAY;
 
          // Comparison Flags
@@ -240,6 +253,7 @@ module alu_tb (/*AUTOARG*/) ;
          a_value = $random;
          b_value = $random;
          addi_sub_flag_tb_i = $random % 2;
+         store_force_add_flag_tb_i = $random % 2;
          #DELAY;
 
          // Add

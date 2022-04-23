@@ -101,7 +101,7 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
 
       opcode_tb_i = 7'b0000000;
-      expected = 11'b000_0000_0000;
+      expected = 11'bxxx_xxxx_xxxx;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
@@ -146,12 +146,12 @@ module control_tb (/*AUTOARG*/) ;
       end
 
       opcode_tb_i = 7'b010_0011;
-      expected = 11'b010_0000_0000;
+      expected = 11'b010_0000_0100;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
          $display("%d ns: error s type sb -> sw\n");
-         $display("expected:%h received %h\n", expected, output_bus);
+         $display("expected:%h received %h\n", $time, expected, output_bus);
       end
 
       opcode_tb_i = 7'b110_0111;

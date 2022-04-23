@@ -55,10 +55,8 @@ module imm_gen (/*AUTOARG*/
    //-----------------------------------------------------------------------------
    // RTL
    //-----------------------------------------------------------------------------
-   reg [2:0]    expected_value_reg;
    always @ (*) begin
       opcode_r = instr_w_i[6:0];
-      expected_value_reg = {opcode_r[3], opcode_r[1:0]};
 
       // Comparison order is based on prio, do not modify order without checking prio
       // Sign extend all results to 32-bits
@@ -73,7 +71,7 @@ module imm_gen (/*AUTOARG*/
       end else begin // I_TYPE or Don't Care
          imm_r = {{20{instr_w_i[31]}}, instr_w_i[31:20]};
       end
-   end
+   end // always @ (*)
 
    //-----------------------------------------------------------------------------
    // Assigns
