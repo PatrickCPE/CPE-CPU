@@ -155,11 +155,11 @@ module control_tb (/*AUTOARG*/) ;
       end
 
       opcode_tb_i = 7'b110_0111;
-      expected = 11'b100_1010_1110;
+      expected = 11'b100_1010_0110;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: error i type jalr\n");
+         $display("%d ns: error i type jalr\n", $time);
          $display("expected:%h received %h\n", expected, output_bus);
       end
 

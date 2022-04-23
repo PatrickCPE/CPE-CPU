@@ -71,7 +71,7 @@ module control (/*AUTOARG*/
 
    // Order of instrs. for -> ordering seen on this doc (pg. 130)
    // https://riscv.org/wp-content/uploads/2019/12/riscv-spec-20191213.pdf
-
+   reg test_reg;
    always @ (*) begin
       case (opcode_w_i)
          7'b1101111: begin      // J Type - JAL;
@@ -86,6 +86,7 @@ module control (/*AUTOARG*/
             alu_src_b_r    = 1'b1;
             pc_to_reg_r    = 1'b1;
             cmp_branch_r_h = 1'b0;
+            test_reg = 1;
          end
          7'b0110111: begin      // U Type - LUI;
             reg_write_r_h  = 1'b1;
@@ -147,7 +148,7 @@ module control (/*AUTOARG*/
             mem_to_reg_r_h = 1'b0;
             jal_r_h = 1'b1;
             imm_to_reg_r_h = 1'b0;
-            alu_src_a_r    = 1'b1;
+            alu_src_a_r    = 1'b0;
             alu_src_b_r    = 1'b1;
             pc_to_reg_r    = 1'b1;
             cmp_branch_r_h = 1'b0;

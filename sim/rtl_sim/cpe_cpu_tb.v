@@ -175,6 +175,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       end
    endtask // display_u_type
 
+   task display_jal_type;
+      begin
+         $display("%d ns: Cycle:%d Res:%d Old PC:%d New PC:%d", $time, cycle, duv.wr_data_w_i,
+                  duv.pc_0.instr_w_o, duv.pc_0.pc_w_i);
+      end
+   endtask // display_jal_type
+
    //-----------------------------------------------------------------------------
    // Tests
    //-----------------------------------------------------------------------------
@@ -184,6 +191,9 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
    end
 
    always @ (posedge clk_tb_i) begin
+      if (cycle == 1) begin
+         display_i_type();
+      end
       cycle <= cycle + 1;
       #DELAY;
       if (i_type) begin
@@ -226,7 +236,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
          if (cycle == 83) begin
             $display("%d ns: U Type Complete\n", $time);
             u_type = 0;
-            // TODO NEXT TYPE
+            jal_type = 1;
+         end
+      end else if (jal_type) begin
+         display_jal_type();
+         if (cycle == 85) begin
+            $display("%d ns: JAL/JALR Type Complete\n", $time);
+            jal_type = 0;
          end
       end
    end
@@ -246,7 +262,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
 
    integer reset_done, initial_delay_done, curr_instr, cycle;
-   integer i_type, r_type, s_type, load_type, b_type, u_type;
+   integer i_type, r_type, s_type, load_type, b_type, u_type, jal_type;
    initial begin
       clk_tb_i           = 0;
       res_tb_i_h         = 0;
@@ -260,8 +276,9 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       r_type             = 0;
       s_type             = 0;
       u_type             = 0;
-      load_type = 0;
-      mem_data_tb_i = 1;
+      jal_type = 0;
+      load_type          = 0;
+      mem_data_tb_i      = 1;
       reset_mem();
       // Consult Test Spreadsheet to see expected results on each clock cycle
       // Immediate Instructions Tests
@@ -387,9 +404,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       add_instr(curr_instr + 4, 32'b0000_000_00001_00000_111_01000_1100011); // BGEU 0, 1, 8
 
       // U Type Instructions Tests
-      //=======================imm_____________rs1___ff3_rd____opcode_======INST rd, offset(rs1)
+      //=======================imm_____________rs1___ff3_rd____opcode_======INST rd, imm
       add_instr(curr_instr, 32'b1111_1111_1111_1111_1111_10110_0110111); // LUI 22, 0xFFFFF
       add_instr(curr_instr, 32'b1111_1111_1111_1111_1111_10111_0010111); // AUIPC 23, 0xFFFFF
+
+      // JAL/JALR Instructions Tests
+      add_instr(curr_instr, 32'b0001_0111_1000_00000_000_11000_1100111); // JALR 24, 0, 372
+      add_instr(curr_instr, 32'b0000_0000_1000_0000_0000_11001_1101111); // JAL 25, 8
 
       reset_dut();
 
