@@ -105,8 +105,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR Couldn't handle Invalid Instruction\n", $time);
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error couldn't handle invalid instruction\n", $time);
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b110_1111;
@@ -114,8 +114,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR J Type - JAL;\n", $time);
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error j type - jal;\n", $time);
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b011_0111;
@@ -123,8 +123,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR U Type - LUI\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error u type - lui\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b001_0111;
@@ -132,8 +132,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR U Type - AUIPC\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error u type - auipc\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b110_0011;
@@ -141,8 +141,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR B Type BEQ -> BGEU\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error b type beq -> bgeu\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b010_0011;
@@ -150,8 +150,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR S Type SB -> SW\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error s type sb -> sw\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b110_0111;
@@ -159,8 +159,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR I Type JALR\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error i type jalr\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b000_0011;
@@ -168,8 +168,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR I Type LB -> LHW\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error i type lb -> lhw\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b001_0011;
@@ -177,8 +177,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR I Type ADDI -> SRAI\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error i type addi -> srai\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       opcode_tb_i = 7'b011_0011;
@@ -186,8 +186,8 @@ module control_tb (/*AUTOARG*/) ;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;
-         $display("%d ns: ERROR R Type ADD -> AND\n");
-         $display("Expected:%h Received %h\n", expected, output_bus);
+         $display("%d ns: error r type add -> and\n");
+         $display("expected:%h received %h\n", expected, output_bus);
       end
 
       $display("%d ns: finished with %d errors\n", $time, errors);

@@ -14,10 +14,10 @@
 //-----------------------------------------------------------------------------
 module cpe_cpu (/*AUTOARG*/
    // Outputs
-   mem_data_in_w_o, instr_w_o, mem_wr_w_o_h, mem_rd_w_o_h, mem_wr_byte_sel_w_o,
-   mem_rd_byte_sel_w_o,
+   mem_data_in_w_o, mem_addr_in_w_o, instr_w_o, mem_wr_w_o_h, mem_rd_w_o_h,
+   mem_wr_byte_sel_w_o, mem_rd_byte_sel_w_o,
    // Inputs
-   clk_w_i, res_w_i_h, instr_w_i, mem_data_w_o
+   clk_w_i, res_w_i_h, instr_w_i, mem_data_w_i
    ) ;
 
    //-----------------------------------------------------------------------------
@@ -26,12 +26,13 @@ module cpe_cpu (/*AUTOARG*/
    input wire clk_w_i;
    input wire res_w_i_h;
    input wire [31:0] instr_w_i;
-   input wire [31:0] mem_data_w_o;
+   input wire [31:0] mem_data_w_i;
 
    //-----------------------------------------------------------------------------
    // Outputs
    //-----------------------------------------------------------------------------
    output wire [31:0] mem_data_in_w_o;
+   output wire [31:0] mem_addr_in_w_o;
    output wire [31:0] instr_w_o;
    output wire                             mem_wr_w_o_h;
    output wire                             mem_rd_w_o_h;
@@ -74,7 +75,7 @@ module cpe_cpu (/*AUTOARG*/
    wire                                    mem_to_reg_w_o_h;
    wire                                    jal_w_o_h;
    wire                                    imm_to_reg_w_o_h;
-   wire                                    pc_to_reg_w_o_h;
+   wire                                    pc_to_reg_w_o;
    wire                                    cmp_branch_w_o_h;
 
    // ALU
@@ -202,6 +203,7 @@ module cpe_cpu (/*AUTOARG*/
 
    // CONTROL - TOP LEVEL
    assign opcode_w_i = instr_w_i[6:0];
+   assign reg_wr_flag_w_i = reg_write_w_o_h;
 
    // ALU
    assign a_data_w_i = alu_src_a_w_o ? instr_w_o : rd_data_1_w_o;
@@ -219,12 +221,16 @@ module cpe_cpu (/*AUTOARG*/
 
    // Data Into Register Intermediates
    assign wr_data_w_i = imm_to_reg_w_o_h ? imm_w_o : imm_or_res_w_i;
-   assign imm_or_res_w_i = pc_to_reg_w_o_h ? (instr_w_o + 4) : alu_mem_w_i;
-   assign alu_mem_w_i = mem_to_reg_w_o_h ? mem_data_w_o : alu_res_w_o;
+   assign imm_or_res_w_i = pc_to_reg_w_o ? (instr_w_o + 4) : alu_mem_w_i;
+   assign alu_mem_w_i = mem_to_reg_w_o_h ? mem_data_w_i : alu_res_w_o;
 
    // Mem Byte/HW/Word Select
    assign mem_wr_byte_sel_w_o = instr_w_i[14:12];
    assign mem_rd_byte_sel_w_o = instr_w_i[14:12];
+
+   // Data Mem Inputs
+   assign mem_addr_in_w_o = alu_res_w_o;
+   assign mem_data_in_w_o = rd_data_2_w_o;
 
 endmodule // cpe_cpu
 

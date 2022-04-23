@@ -55,7 +55,7 @@ module alu (/*AUTOARG*/
    //-----------------------------------------------------------------------------
    always @ (*) begin
       case (alu_control_w_i)
-         4'b0000: alu_res_r = a_data_w_i + b_data_w_i; // ADD;
+         4'b0000: alu_res_r = $signed(a_data_w_i) + $signed(b_data_w_i); // ADD;
          4'b0001: alu_res_r = a_data_w_i << b_data_w_i[4:0]; // SLL;
          4'b0010: alu_res_r = ($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0; // SLT
          4'b0011: alu_res_r = (a_data_w_i < b_data_w_i) ? 1 : 0; // SLTU;
@@ -64,8 +64,11 @@ module alu (/*AUTOARG*/
          4'b0110: alu_res_r = a_data_w_i | b_data_w_i; // OR;
          4'b0111: alu_res_r = a_data_w_i & b_data_w_i; // AND;
          4'b1000: alu_res_r = a_data_w_i - b_data_w_i; // SUB;
+         4'b1010: alu_res_r = ($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0; // SLT - IVERILOG NO ? Support
+         4'b1011: alu_res_r = (a_data_w_i < b_data_w_i) ? 1 : 0; // SLTU - IVERILOG NO ? Support
          4'b1101: alu_res_r = a_data_w_i >>> b_data_w_i[4:0]; // SRA;
-         default: alu_res_r = 0; // Error if it enters
+         4'b1111: alu_res_r = a_data_w_i & b_data_w_i; // AND - IVERILOG NO ? Support
+         default: alu_res_r = 32'hXXXXXXXX; // Error if it enters
       endcase
    end
 

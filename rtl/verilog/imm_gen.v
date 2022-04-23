@@ -69,7 +69,6 @@ module imm_gen (/*AUTOARG*/
       end else begin // I_TYPE or a don't care
          imm_r = {{20{instr_w_i[31]}}, instr_w_i[31:20]};
       end
-
    end
 
    //-----------------------------------------------------------------------------
