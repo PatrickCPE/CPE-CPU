@@ -33,10 +33,14 @@ module imm_gen (/*AUTOARG*/
    // Parameters
    //-----------------------------------------------------------------------------
    parameter J_TYPE = 7'b1101111, // Concatanate compare field from Op Code
-      U_TYPE = 6'b010111,
-      S_TYPE = 7'b0100011,
-      B_TYPE = 7'b1100011,
-      I_TYPE = 2'b11;           // I Type is default Else Case
+      U_TYPE      = 6'b010111,
+      S_TYPE      = 7'b0100011,
+      B_TYPE      = 7'b1100011,
+      I_TYPE      = 2'b11;           // I Type is default Else Case
+
+   parameter SLLI = 4'b0001,
+      SRLI = 4'b0101,
+      SRAI = 4'b1101;
 
    //-----------------------------------------------------------------------------
    // Internal Registers and Wires
@@ -66,7 +70,7 @@ module imm_gen (/*AUTOARG*/
          imm_r = {{20{instr_w_i[31]}}, instr_w_i[31:25], instr_w_i[11:7]};
       end else if (opcode_r == B_TYPE) begin
          imm_r = {{19{instr_w_i[31]}}, instr_w_i[31], instr_w_i[7], instr_w_i[30:25], instr_w_i[11:8], 1'b0};
-      end else begin // I_TYPE or a don't care
+      end else begin // I_TYPE or Don't Care
          imm_r = {{20{instr_w_i[31]}}, instr_w_i[31:20]};
       end
    end

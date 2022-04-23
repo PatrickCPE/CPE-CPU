@@ -17,7 +17,7 @@ module alu (/*AUTOARG*/
    // Outputs
    alu_res_w_o, eq_w_o_h, gteu_w_o_h, ltu_w_o_h, gtes_w_o_h, lts_w_o_h,
    // Inputs
-   a_data_w_i, b_data_w_i, alu_control_w_i
+   a_data_w_i, b_data_w_i, alu_control_w_i, addi_sub_flag_w_i
    ) ;
 
    //-----------------------------------------------------------------------------
@@ -26,6 +26,7 @@ module alu (/*AUTOARG*/
    input wire [31:0] a_data_w_i;
    input wire [31:0] b_data_w_i;
    input wire [3:0]  alu_control_w_i;
+   input wire        addi_sub_flag_w_i;
 
    //-----------------------------------------------------------------------------
    // Outputs
@@ -55,7 +56,7 @@ module alu (/*AUTOARG*/
    //-----------------------------------------------------------------------------
    always @ (*) begin
       case (alu_control_w_i)
-         4'b0000: alu_res_r = $signed(a_data_w_i) + $signed(b_data_w_i); // ADD;
+         4'b0000: alu_res_r = a_data_w_i + b_data_w_i; // ADD;
          4'b0001: alu_res_r = a_data_w_i << b_data_w_i[4:0]; // SLL;
          4'b0010: alu_res_r = ($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0; // SLT
          4'b0011: alu_res_r = (a_data_w_i < b_data_w_i) ? 1 : 0; // SLTU;
@@ -63,10 +64,16 @@ module alu (/*AUTOARG*/
          4'b0101: alu_res_r = a_data_w_i >> b_data_w_i[4:0]; // SRL;
          4'b0110: alu_res_r = a_data_w_i | b_data_w_i; // OR;
          4'b0111: alu_res_r = a_data_w_i & b_data_w_i; // AND;
-         4'b1000: alu_res_r = a_data_w_i - b_data_w_i; // SUB;
+         4'b1000: begin
+                if (addi_sub_flag_w_i) begin
+                   alu_res_r = a_data_w_i - b_data_w_i; // SUB;
+                end else begin
+                   alu_res_r = a_data_w_i + b_data_w_i; // ADDI - Special Case;
+                end
+            end
          4'b1010: alu_res_r = ($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0; // SLT - IVERILOG NO ? Support
          4'b1011: alu_res_r = (a_data_w_i < b_data_w_i) ? 1 : 0; // SLTU - IVERILOG NO ? Support
-         4'b1101: alu_res_r = a_data_w_i >>> b_data_w_i[4:0]; // SRA;
+         4'b1101: alu_res_r = $signed(a_data_w_i) >>> b_data_w_i[4:0]; // SRA;
          4'b1111: alu_res_r = a_data_w_i & b_data_w_i; // AND - IVERILOG NO ? Support
          default: alu_res_r = 32'hXXXXXXXX; // Error if it enters
       endcase

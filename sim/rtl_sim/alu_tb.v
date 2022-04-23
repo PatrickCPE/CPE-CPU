@@ -36,10 +36,12 @@ module alu_tb (/*AUTOARG*/) ;
    reg [31:0]         a_data_tb_i;
    reg [31:0]         b_data_tb_i;
    reg [3:0]          alu_control_tb_i;
+   reg               addi_sub_flag_tb_i;
 
    wire [31:0]        a_data_w_i;
    wire [31:0]        b_data_w_i;
    wire [3:0]         alu_control_w_i;
+   wire               addi_sub_flag_w_i;
 
 
    wire [31:0]        alu_res_w_o;
@@ -63,7 +65,8 @@ module alu_tb (/*AUTOARG*/) ;
            // Inputs
            .a_data_w_i                  (a_data_w_i),
            .b_data_w_i                  (b_data_w_i),
-           .alu_control_w_i             (alu_control_w_i));
+           .alu_control_w_i             (alu_control_w_i),
+           .addi_sub_flag_w_i           (addi_sub_flag_w_i));
 
    //-----------------------------------------------------------------------------
    // RTL
@@ -75,6 +78,7 @@ module alu_tb (/*AUTOARG*/) ;
    assign a_data_w_i = a_data_tb_i;
    assign b_data_w_i = b_data_tb_i;
    assign alu_control_w_i = alu_control_tb_i;
+   assign addi_sub_flag_w_i = addi_sub_flag_tb_i;
 
    //-----------------------------------------------------------------------------
    // Tasks
@@ -100,7 +104,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A << B[4:0];\nExpected:%h\nReceived:h\n", $time, expected_val,
+                  $display("%d ns: Error A << B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val,
                            alu_res_w_o);
                end
             end
@@ -109,7 +113,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A < B ? 1 : 0;\nExpected:%h\nReceived:h\n", $time,
+                  $display("%d ns: Error A < B ? 1 : 0;\nExpected:%h\nReceived:%h\n", $time,
                            expected_val, alu_res_w_o);
                end
             end
@@ -117,7 +121,7 @@ module alu_tb (/*AUTOARG*/) ;
                expected_val = (a_val < b_val) ? 1 : 0;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A < B UNSIGNED;\nExpected:%h\nReceived:h\n", $time,
+                  $display("%d ns: Error A < B UNSIGNED;\nExpected:%h\nReceived:%h\n", $time,
                            expected_val, alu_res_w_o);
                end
             end
@@ -125,7 +129,7 @@ module alu_tb (/*AUTOARG*/) ;
                expected_val = a_val ^ b_val;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
-                  $display("%d ns: Error A ^ B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A ^ B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0101: begin      // SRL
@@ -133,7 +137,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A >> B[4:0];\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A >> B[4:0];\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0110: begin      // OR
@@ -141,7 +145,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A | B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A | B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b0111: begin      // AND
@@ -150,15 +154,19 @@ module alu_tb (/*AUTOARG*/) ;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
                   errors = errors + 1;
-                  $display("%d ns: Error A & B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A & B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b1000: begin      // SUB
-               expected_val = a_val - b_val;
+               if (addi_sub_flag_w_i == 1) begin
+                  expected_val       = a_val - b_val;
+               end else begin
+                  expected_val       = a_val + b_val; // Special Case for ADDI
+               end
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A - B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A - B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             4'b1101: begin      // SRA
@@ -166,7 +174,7 @@ module alu_tb (/*AUTOARG*/) ;
                #DELAY;
                if (alu_res_w_o !== expected_val) begin
                   errors = errors + 1;
-                  $display("%d ns: Error A >>> B;\nExpected:%h\nReceived:h\n", $time, expected_val, alu_res_w_o);
+                  $display("%d ns: Error A >>> B;\nExpected:%h\nReceived:%h\n", $time, expected_val, alu_res_w_o);
                end
             end
             default: begin
@@ -231,6 +239,7 @@ module alu_tb (/*AUTOARG*/) ;
          // Generate Test Values
          a_value = $random;
          b_value = $random;
+         addi_sub_flag_tb_i = $random % 2;
          #DELAY;
 
          // Add
