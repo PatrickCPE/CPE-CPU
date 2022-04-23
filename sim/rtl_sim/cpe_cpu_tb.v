@@ -139,10 +139,15 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
    task display_i_type;
       begin
-         $display("%d ns: Cycle:%d Res Addr:%d Res:%d", $time, cycle, duv.wr_reg_w_i, $signed(duv.wr_data_w_i));
+         $display("%d ns: Cycle:%d Addr:%d Res:%d", $time, cycle, duv.wr_reg_w_i, $signed(duv.wr_data_w_i));
       end
    endtask // display_i_type
 
+   task display_r_type;
+      begin
+         $display("%d ns: Cycle:%d Addr:%d Res:%d", $time, cycle, duv.wr_reg_w_i, $signed(duv.wr_data_w_i));
+      end
+   endtask // display_r_type
 
    //-----------------------------------------------------------------------------
    // Tests
@@ -159,6 +164,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
          if (cycle == 21) begin
             $display("%d ns: I Type Complete\n", $time);
             i_type = 0;
+            r_type = 1;
+         end
+      end else if (r_type) begin
+         display_r_type();
+         if (cycle == 50) begin
+            $display("%d ns: R Type Complete\n", $time);
+            r_type = 0;
          end
       end
    end
@@ -189,7 +201,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
  -----/\----- EXCLUDED -----/\----- */
 
-   integer errors, reset_done, initial_delay_done, curr_instr, cycle;
+   integer errors, reset_done, initial_delay_done, curr_instr, cycle, r_type;
    integer i_type;
    initial begin
       clk_tb_i           = 0;
@@ -202,6 +214,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       initial_delay_done = 0;
       curr_instr         = 0;
       i_type = 0;
+      r_type = 0;
       reset_mem();
       // Consult Test Spreadsheet to see expected results on each clock cycle
       // Immediate Instructions Tests
@@ -235,6 +248,47 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       add_instr(curr_instr, 32'b0000_0000_0001_00001_111_10011_0010011); // ANDI 0x13, 0x1, 1
       add_instr(curr_instr, 32'b0000_0000_0000_00001_111_10100_0010011); // ANDI 0x13, 0x1, 0
       add_instr(curr_instr, 32'b1111_1111_1111_00001_111_10101_0010011); // ANDI 0x13, 0x1, 0xFFF
+
+      // R Type Instructions Tests
+      //====================ff7_________rs2___rs1___ff3_rd____opcode_======INST RD, RS1, RS2
+      add_instr(curr_instr, 32'b0000_000_00000_00001_000_10110_0110011); // ADD 22, 1, 0
+      add_instr(curr_instr, 32'b0000_000_00000_00100_000_10111_0110011); // ADD 23, 4, 0
+
+      add_instr(curr_instr, 32'b0100_000_00000_00001_000_11000_0110011); // SUB 24, 1, 0
+      add_instr(curr_instr, 32'b0100_000_00001_00000_000_11001_0110011); // SUB 25, 0, 1
+      add_instr(curr_instr, 32'b0100_000_00001_00011_000_11010_0110011); // SUB 26, 3, 1
+
+      add_instr(curr_instr, 32'b0100_000_00001_00001_001_11011_0110011); // SLL 27, 1, 1
+      add_instr(curr_instr, 32'b0100_000_00000_00001_001_11100_0110011); // SLL 28, 1, 0
+      add_instr(curr_instr, 32'b0100_000_00011_00010_001_11101_0110011); // SLL 29, 2, 3
+
+      add_instr(curr_instr, 32'b0000_000_00000_00001_010_11110_0110011); // SLT 30, 1, 0
+      add_instr(curr_instr, 32'b0000_000_00001_00000_010_11111_0110011); // SLT 31, 0, 1
+      add_instr(curr_instr, 32'b0000_000_00000_00100_010_10110_0110011); // SLT 22, 4, 0
+      add_instr(curr_instr, 32'b0000_000_00010_00100_010_10111_0110011); // SLT 23, 4, 2
+
+      add_instr(curr_instr, 32'b0000_000_00000_00001_011_11000_0110011); // SLTU 24, 1, 0
+      add_instr(curr_instr, 32'b0000_000_00001_00000_011_11001_0110011); // SLTU 25, 0, 1
+      add_instr(curr_instr, 32'b0000_000_00000_00100_011_11010_0110011); // SLTU 26, 4, 0
+
+      add_instr(curr_instr, 32'b0000_000_00011_00000_100_11011_0110011); // XOR 27, 0, 3
+      add_instr(curr_instr, 32'b0000_000_00011_00001_100_11100_0110011); // XOR 28, 1, 3
+
+      add_instr(curr_instr, 32'b0000_000_00000_00001_101_11101_0110011); // SRL 29, 1, 0
+      add_instr(curr_instr, 32'b0000_000_00001_00010_101_11110_0110011); // SRL 30, 2, 1
+      add_instr(curr_instr, 32'b0000_000_00001_00100_101_11111_0110011); // SRL 31, 4, 1
+
+      add_instr(curr_instr, 32'b0100_000_00000_00001_101_10110_0110011); // SRA 22, 1, 0
+      add_instr(curr_instr, 32'b0100_000_00001_00010_101_10111_0110011); // SRA 23, 2, 1
+      add_instr(curr_instr, 32'b0100_000_00001_00100_101_11000_0110011); // SRA 24, 4, 1
+
+      add_instr(curr_instr, 32'b0000_000_00000_00001_110_11001_0110011); // OR 25, 1, 0
+      add_instr(curr_instr, 32'b0000_000_00001_00010_110_11010_0110011); // OR 26, 2, 1
+      add_instr(curr_instr, 32'b0000_000_00001_00001_110_11011_0110011); // OR 27, 1, 1
+
+      add_instr(curr_instr, 32'b0000_000_00001_00001_111_11100_0110011); // AND 28, 1, 1
+      add_instr(curr_instr, 32'b0000_000_00000_00001_111_11101_0110011); // AND 29, 1, 0
+      add_instr(curr_instr, 32'b0000_000_01001_00001_111_11110_0110011); // AND 30, 1, 9
 
       reset_dut();
 

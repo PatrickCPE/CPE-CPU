@@ -211,7 +211,7 @@ module cpe_cpu (/*AUTOARG*/
    assign a_data_w_i = alu_src_a_w_o ? instr_w_o : rd_data_1_w_o;
    assign b_data_w_i = alu_src_b_w_o ? imm_w_o : rd_data_2_w_o;
    assign alu_control_w_i = {instr_w_i[30], instr_w_i[14:12]};
-   assign addi_sub_flag = instr_w_i[5];
+   assign addi_sub_flag_w_i = instr_w_i[5];
 
    // CONTROL - CONDITIONAL BRANCH
    assign funct_3_w_i = instr_w_i[14:12];

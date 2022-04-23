@@ -192,17 +192,17 @@ module control (/*AUTOARG*/
             cmp_branch_r_h = 1'b0;
          end
          default: begin
-            reg_write_r_h = 1'b0;
-            mem_wr_r_h = 1'b0;
-            mem_rd_r_h = 1'b0;
-            branch_r_h = 1'b0;
-            mem_to_reg_r_h = 1'b0;
-            jal_r_h = 1'b0;
-            imm_to_reg_r_h = 1'b0;
-            alu_src_a_r    = 1'b0;
-            alu_src_b_r    = 1'b0;
-            pc_to_reg_r    = 1'b0;
-            cmp_branch_r_h = 1'b0;
+            reg_write_r_h = 1'bx;
+            mem_wr_r_h = 1'bx;
+            mem_rd_r_h = 1'bx;
+            branch_r_h = 1'bx;
+            mem_to_reg_r_h = 1'bx;
+            jal_r_h = 1'bx;
+            imm_to_reg_r_h = 1'bx;
+            alu_src_a_r    = 1'bx;
+            alu_src_b_r    = 1'bx;
+            pc_to_reg_r    = 1'bx;
+            cmp_branch_r_h = 1'bx;
          end
       endcase // case (opcode_w_i)
    end

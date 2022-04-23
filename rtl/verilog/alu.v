@@ -71,6 +71,7 @@ module alu (/*AUTOARG*/
                    alu_res_r = a_data_w_i + b_data_w_i; // ADDI - Special Case;
                 end
             end
+         4'b1001: alu_res_r = a_data_w_i << b_data_w_i[4:0]; // SLL - IVERILOG NO ? Support;
          4'b1010: alu_res_r = ($signed(a_data_w_i) < $signed(b_data_w_i)) ? 1 : 0; // SLT - IVERILOG NO ? Support
          4'b1011: alu_res_r = (a_data_w_i < b_data_w_i) ? 1 : 0; // SLTU - IVERILOG NO ? Support
          4'b1101: alu_res_r = $signed(a_data_w_i) >>> b_data_w_i[4:0]; // SRA;
