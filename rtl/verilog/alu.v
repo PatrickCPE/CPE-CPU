@@ -18,7 +18,7 @@ module alu (/*AUTOARG*/
    alu_res_w_o,
    // Inputs
    a_data_w_i, b_data_w_i, alu_control_w_i, addi_sub_flag_w_i,
-   store_force_add_flag_w_i
+   store_force_add_flag_w_i, branch_force_add_flag_w_i
    ) ;
 
    //-----------------------------------------------------------------------------
@@ -29,6 +29,7 @@ module alu (/*AUTOARG*/
    input wire [3:0]  alu_control_w_i;
    input wire        addi_sub_flag_w_i;
    input wire        store_force_add_flag_w_i;
+   input wire        branch_force_add_flag_w_i;
 
    //-----------------------------------------------------------------------------
    // Outputs
@@ -52,7 +53,7 @@ module alu (/*AUTOARG*/
    // RTL
    //-----------------------------------------------------------------------------
    always @ (*) begin
-      if (store_force_add_flag_w_i) begin
+      if (store_force_add_flag_w_i | branch_force_add_flag_w_i) begin
          alu_res_r = a_data_w_i + b_data_w_i; // Force Add for Store Byte ADD;
       end else begin
          case (alu_control_w_i)

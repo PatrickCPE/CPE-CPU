@@ -119,7 +119,7 @@ module control_tb (/*AUTOARG*/) ;
       end
 
       opcode_tb_i = 7'b011_0111;
-      expected = 11'b100_0001_0000;
+      expected = 11'b100_0001_0100;
       #DELAY;
       if (output_bus !== expected) begin
          errors = errors + 1;

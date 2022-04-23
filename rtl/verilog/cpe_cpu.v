@@ -229,7 +229,11 @@ module cpe_cpu (/*AUTOARG*/
    assign b_data_w_i = alu_src_b_w_o ? imm_w_o : rd_data_2_w_o;
    assign alu_control_w_i = {instr_w_i[30], instr_w_i[14:12]};
    assign addi_sub_flag_w_i = instr_w_i[5];
-   assign store_force_add_flag_w_i = ((instr_w_i[6:0] == 7'b0100011) | (instr_w_i[6:0] == 7'b0000011));
+   // store_force also used for U Types to force add
+   assign store_force_add_flag_w_i = ((instr_w_i[6:0] == 7'b0100011) |
+                                      (instr_w_i[6:0] == 7'b0000011) |
+                                      (instr_w_i[6:0] == 7'b0110111) |
+                                      (instr_w_i[6:0] == 7'b0010111));
    assign branch_force_add_flag_w_i = branch_res;
 
    // CMP GEN

@@ -88,15 +88,15 @@ module control (/*AUTOARG*/
             cmp_branch_r_h = 1'b0;
          end
          7'b0110111: begin      // U Type - LUI;
-            reg_write_r_h = 1'b1;
-            mem_wr_r_h = 1'b0;
-            mem_rd_r_h = 1'b0;
-            branch_r_h = 1'b0;
+            reg_write_r_h  = 1'b1;
+            mem_wr_r_h     = 1'b0;
+            mem_rd_r_h     = 1'b0;
+            branch_r_h     = 1'b0;
             mem_to_reg_r_h = 1'b0;
-            jal_r_h = 1'b0;
+            jal_r_h        = 1'b0;
             imm_to_reg_r_h = 1'b1;
             alu_src_a_r    = 1'b0;
-            alu_src_b_r    = 1'b0;
+            alu_src_b_r    = 1'b1;
             pc_to_reg_r    = 1'b0;
             cmp_branch_r_h = 1'b0;
          end

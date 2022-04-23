@@ -168,6 +168,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       end
    endtask // display_b_type
 
+   task display_u_type;
+      begin
+         $display("%d ns: Cycle:%d Res:%d Old PC:%d Input + Old PC", $time, cycle, duv.wr_data_w_i,
+                  duv.pc_0.instr_w_o, (duv.wr_data_w_i + duv.pc_0.instr_w_o) % (1 << 31));
+      end
+   endtask // display_u_type
+
    //-----------------------------------------------------------------------------
    // Tests
    //-----------------------------------------------------------------------------
@@ -212,6 +219,13 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
          if (cycle == 81) begin
             $display("%d ns: B Type Complete\n", $time);
             b_type = 0;
+            u_type = 1;
+         end
+      end else if (u_type) begin
+         display_u_type();
+         if (cycle == 83) begin
+            $display("%d ns: U Type Complete\n", $time);
+            u_type = 0;
             // TODO NEXT TYPE
          end
       end
@@ -232,7 +246,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
 
    integer reset_done, initial_delay_done, curr_instr, cycle;
-   integer i_type, r_type, s_type, load_type, b_type;
+   integer i_type, r_type, s_type, load_type, b_type, u_type;
    initial begin
       clk_tb_i           = 0;
       res_tb_i_h         = 0;
@@ -245,6 +259,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       i_type             = 0;
       r_type             = 0;
       s_type             = 0;
+      u_type             = 0;
       load_type = 0;
       mem_data_tb_i = 1;
       reset_mem();
@@ -370,6 +385,11 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       add_instr(curr_instr + 4, 32'b0000_000_00000_00001_111_01000_1100011); // BGEU 1, 0, 8
       add_instr(curr_instr + 4, 32'b0000_000_00000_00100_111_01000_1100011); // BGEU 4, 0, 8
       add_instr(curr_instr + 4, 32'b0000_000_00001_00000_111_01000_1100011); // BGEU 0, 1, 8
+
+      // U Type Instructions Tests
+      //=======================imm_____________rs1___ff3_rd____opcode_======INST rd, offset(rs1)
+      add_instr(curr_instr, 32'b1111_1111_1111_1111_1111_10110_0110111); // LUI 22, 0xFFFFF
+      add_instr(curr_instr, 32'b1111_1111_1111_1111_1111_10111_0010111); // AUIPC 23, 0xFFFFF
 
       reset_dut();
 
