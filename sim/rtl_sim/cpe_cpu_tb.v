@@ -126,8 +126,6 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
    task add_instr(input [MEM_WIDTH:0] instr_addr, input [31:0] instr);
       begin
-         //instr_mem[instr_addr] = instr[31:24];
-         $display("ADDING INSTR:%h TO LOCATION:%h\n", instr, instr_addr);
          instr_mem[instr_addr] = instr[31:24];
          instr_mem[instr_addr + 1] = instr[23:16];
          instr_mem[instr_addr + 2] = instr[15:8];
@@ -165,8 +163,8 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
    task display_b_type;
       begin
-         #DELAY;
-         $display("%d ns: Cycle:%d New PC:%d Old PC:%d", $time, cycle, duv.instr_w_o, duv.pc_w_i);
+         $display("%d ns: Cycle:%d New PC:%d Old PC:%d Difference:%d", $time, cycle, duv.pc_0.pc_w_i,
+                  duv.pc_0.instr_w_o, $signed(duv.pc_0.pc_w_i - duv.pc_0.instr_w_o));
       end
    endtask // display_b_type
 
@@ -180,6 +178,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
 
    always @ (posedge clk_tb_i) begin
       cycle <= cycle + 1;
+      #DELAY;
       if (i_type) begin
          display_i_type();
          if (cycle == 21) begin
@@ -367,7 +366,7 @@ module cpe_cpu_tb (/*AUTOARG*/) ;
       add_instr(curr_instr, 32'b0000_000_00001_00000_110_01000_1100011); // BLTU 0, 1, 8
       add_instr(curr_instr + 4, 32'b0000_000_00000_00100_110_01000_1100011); // BLTU 4, 0, 8
 
-      add_instr(curr_instr + 4, 32'b0000_000_00000_00000_111_01000_1100011); // BGEU 0, 0, 8
+      add_instr(curr_instr, 32'b0000_000_00000_00000_111_01000_1100011); // BGEU 0, 0, 8
       add_instr(curr_instr + 4, 32'b0000_000_00000_00001_111_01000_1100011); // BGEU 1, 0, 8
       add_instr(curr_instr + 4, 32'b0000_000_00000_00100_111_01000_1100011); // BGEU 4, 0, 8
       add_instr(curr_instr + 4, 32'b0000_000_00001_00000_111_01000_1100011); // BGEU 0, 1, 8

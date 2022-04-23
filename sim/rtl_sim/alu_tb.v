@@ -38,12 +38,14 @@ module alu_tb (/*AUTOARG*/) ;
    reg [3:0]          alu_control_tb_i;
    reg               addi_sub_flag_tb_i;
    reg store_force_add_flag_tb_i;
+   reg branch_force_add_flag_tb_i;
 
    wire [31:0]        a_data_w_i;
    wire [31:0]        b_data_w_i;
    wire [3:0]         alu_control_w_i;
    wire               addi_sub_flag_w_i;
    wire               store_force_add_flag_w_i;
+   wire         branch_force_add_flag_w_i;
 
    wire [31:0]        alu_res_w_o;
    wire               eq_w_o_h;
@@ -63,7 +65,8 @@ module alu_tb (/*AUTOARG*/) ;
            .b_data_w_i                  (b_data_w_i),
            .alu_control_w_i             (alu_control_w_i),
            .addi_sub_flag_w_i           (addi_sub_flag_w_i),
-           .store_force_add_flag_w_i    (store_force_add_flag_w_i));
+           .store_force_add_flag_w_i    (store_force_add_flag_w_i),
+           .branch_force_add_flag_w_i   (branch_force_add_flag_w_i));
 
    //-----------------------------------------------------------------------------
    // RTL
@@ -77,6 +80,7 @@ module alu_tb (/*AUTOARG*/) ;
    assign alu_control_w_i = alu_control_tb_i;
    assign addi_sub_flag_w_i = addi_sub_flag_tb_i;
    assign store_force_add_flag_w_i = store_force_add_flag_tb_i;
+   assign branch_force_add_flag_w_i = branch_force_add_flag_tb_i;
 
    //-----------------------------------------------------------------------------
    // Tasks
@@ -87,7 +91,7 @@ module alu_tb (/*AUTOARG*/) ;
          b_data_tb_i      = b_val;
          alu_control_tb_i = instr;
          #DELAY;
-         if (store_force_add_flag_w_i) begin
+         if (store_force_add_flag_w_i | branch_force_add_flag_w_i) begin
             expected_val = a_val + b_val;
             #DELAY;
             if (alu_res_w_o !== expected_val) begin
@@ -213,10 +217,11 @@ module alu_tb (/*AUTOARG*/) ;
       for (i = 0; i < NUM_TRIALS; i = i + 1) begin
 
          // Generate Test Values
-         a_value = $random;
-         b_value = $random;
-         addi_sub_flag_tb_i = $random % 2;
+         a_value                   = $random;
+         b_value                   = $random;
+         addi_sub_flag_tb_i        = $random % 2;
          store_force_add_flag_tb_i = $random % 2;
+         branch_force_add_flag_tb_i = $random % 2;
          #DELAY;
 
          // Add

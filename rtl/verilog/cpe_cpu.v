@@ -85,8 +85,15 @@ module cpe_cpu (/*AUTOARG*/
    wire [3:0]                              alu_control_w_i;
    wire                                    addi_sub_flag;
    wire                                    store_force_add_flag_w_i;
+   wire                                    branch_force_add_flag_w_i;
    // Output
    wire [31:0]                             alu_res_w_o;
+
+   // Compare Gen
+   // Input
+   wire [31:0] rd_data_1_w_i;
+   wire [31:0] rd_data_2_w_i;
+   // Output
    wire                                    eq_w_o_h;
    wire                                    gteu_w_o_h;
    wire                                    ltu_w_o_h;
@@ -118,17 +125,24 @@ module cpe_cpu (/*AUTOARG*/
    alu alu_0(/*AUTOINST*/
              // Outputs
              .alu_res_w_o               (alu_res_w_o),
-             .eq_w_o_h                  (eq_w_o_h),
-             .gteu_w_o_h                (gteu_w_o_h),
-             .ltu_w_o_h                 (ltu_w_o_h),
-             .gtes_w_o_h                (gtes_w_o_h),
-             .lts_w_o_h                 (lts_w_o_h),
              // Inputs
              .a_data_w_i                (a_data_w_i),
              .b_data_w_i                (b_data_w_i),
              .alu_control_w_i           (alu_control_w_i),
              .addi_sub_flag_w_i         (addi_sub_flag_w_i),
-             .store_force_add_flag_w_i  (store_force_add_flag_w_i));
+             .store_force_add_flag_w_i  (store_force_add_flag_w_i),
+             .branch_force_add_flag_w_i (branch_force_add_flag_w_i));
+
+   cmp_gen cmp_gen_0(/*AUTOINST*/
+                     // Outputs
+                     .eq_w_o_h          (eq_w_o_h),
+                     .gteu_w_o_h        (gteu_w_o_h),
+                     .ltu_w_o_h         (ltu_w_o_h),
+                     .gtes_w_o_h        (gtes_w_o_h),
+                     .lts_w_o_h         (lts_w_o_h),
+                     // Inputs
+                     .rd_data_1_w_i     (rd_data_1_w_i),
+                     .rd_data_2_w_i     (rd_data_2_w_i));
 
    cond_branch_control cbc_0(/*AUTOINST*/
                              // Outputs
@@ -216,6 +230,11 @@ module cpe_cpu (/*AUTOARG*/
    assign alu_control_w_i = {instr_w_i[30], instr_w_i[14:12]};
    assign addi_sub_flag_w_i = instr_w_i[5];
    assign store_force_add_flag_w_i = ((instr_w_i[6:0] == 7'b0100011) | (instr_w_i[6:0] == 7'b0000011));
+   assign branch_force_add_flag_w_i = branch_res;
+
+   // CMP GEN
+   assign rd_data_1_w_i = rd_data_1_w_o;
+   assign rd_data_2_w_i = rd_data_2_w_o;
 
    // CONTROL - CONDITIONAL BRANCH
    assign funct_3_w_i = instr_w_i[14:12];
