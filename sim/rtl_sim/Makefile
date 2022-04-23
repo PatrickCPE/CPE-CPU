@@ -1,15 +1,19 @@
-all: alu control cpe_cpu imm_gen pc registers cond_branch_control
+all: alu cmp_gen control cpe_cpu imm_gen pc registers cond_branch_control
 
 alu:
 	iverilog -o alu.tb alu_tb.v ../../rtl/verilog/alu.v
 	vvp alu.tb
+
+cmp_gen:
+	iverilog -o cmp_gen.tb cmp_gen_tb.v ../../rtl/verilog/cmp_gen.v
+	vvp cmp_gen.tb
 
 control:
 	iverilog -o control.tb control_tb.v ../../rtl/verilog/control.v
 	vvp control.tb
 
 cpe_cpu:
-	iverilog -o cpe_cpu.tb cpe_cpu_tb.v ../../rtl/verilog/cpe_cpu.v ../../rtl/verilog/alu.v ../../rtl/verilog/control.v ../../rtl/verilog/imm_gen.v ../../rtl/verilog/pc.v ../../rtl/verilog/registers.v ../../rtl/verilog/cond_branch_control.v
+	iverilog -o cpe_cpu.tb cpe_cpu_tb.v ../../rtl/verilog/cpe_cpu.v ../../rtl/verilog/alu.v ../../rtl/verilog/control.v ../../rtl/verilog/imm_gen.v ../../rtl/verilog/pc.v ../../rtl/verilog/registers.v ../../rtl/verilog/cond_branch_control.v ../../rtl/verilog/cmp_gen.v
 	vvp cpe_cpu.tb
 
 imm_gen:
@@ -30,6 +34,9 @@ cond_branch_control:
 
 alu_wave: alu
 	gtkwave alu.vcd
+
+cmp_gen_wave: cmp_gen
+	gtkwave cmp_gen.vcd
 
 control_wave: control
 	gtkwave control.vcd
