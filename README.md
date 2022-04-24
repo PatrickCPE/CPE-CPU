@@ -6,7 +6,7 @@ The CPE CPU is a softcore CPU implementing the Risk-V RV32I instruction set (wit
 It was designed completely heirachically with a high focus on readability, and it's main purpose was for me to develop a better understanding of Computer Architecture. 
 
 
-## CPE_CPU - The Design
+## CPE CPU - The Design
 The design is based on the microarchitecture detailed in Patterson and Hennesy's Computer Architecture and Design book with slight modifications 
 
 ### CPE CPU Microarchitecture
@@ -71,6 +71,9 @@ Test development was done on Linux using icurus verilog alongside make. GTKWave 
 ### Requirements
 ``` shell
 sudo apt install iverilog gtkwave
+
+# This tool draws the pretty block diagrams :)
+pip3 install --upgrade symbolator
 ```
 
 ### Running Tests
