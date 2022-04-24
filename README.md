@@ -11,6 +11,11 @@ The design is based on the microarchitecture detailed in Patterson and Hennesy's
 
 TODO DRAW NICE TOP LEVEL OF THE MICRO ARCHITECTURE 
 
+<img src="doc/pictures/micro_arch_cropped.jpg"> 
+Drawn with the newest update of the industry leading GAD system (Graphite Assisted Design)
+
+<img src="doc/block_diagrams/cpe_cpu-cpe_cpu.svg"> 
+
 The focus here was by no means to be efficient. I mean this is a single cycle processor, it's far from efficient. The goal was simplicity, and I can make improvements from there. I saw an intersting write up on a simple two stage pipeline I may try out next :) 
 
 ## Sub Modules
@@ -79,8 +84,8 @@ make all >> test_res.dat
 ```
 
 ### Test Targets
-* all # Run all tests regressively
-* cpe_cpu #Only one that isn't self checking :(
+* all    # Run all tests regressively
+* cpe_cpu    # Only one that isn't self checking :(
 * alu
 * cmp_gen
 * control
