@@ -1,4 +1,4 @@
-all: alu cmp_gen control cpe_cpu imm_gen pc registers cond_branch_control
+all: alu cmp_gen control imm_gen pc registers cond_branch_control cpe_cpu 
 
 alu:
 	iverilog -o alu.tb alu_tb.v ../../rtl/verilog/alu.v

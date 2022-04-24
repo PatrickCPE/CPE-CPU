@@ -1,7 +1,7 @@
 # CPE CPU
 
 ## Overview
-The CPE CPU is a softcore CPU implementing the Risk-V RV32I instruction set (with very small caveats). 
+The CPE CPU is a softcore CPU implementing the Risk-V RV32I instruction set (with very small caveats of no FENCE, ECALL, or EBREAK. I'm not supporting multiple cores or GNU Debugger extensions). 
 
 It was designed completely heirachically with a high focus on readability, and it's main purpose was for me to develop a better understanding of Computer Architecture. 
 
@@ -9,14 +9,15 @@ It was designed completely heirachically with a high focus on readability, and i
 ## CPE_CPU - The Design
 The design is based on the microarchitecture detailed in Patterson and Hennesy's Computer Architecture and Design book with slight modifications 
 
-TODO DRAW NICE TOP LEVEL OF THE MICRO ARCHITECTURE 
-
+### CPE CPU Microarchitecture
 <img src="doc/pictures/micro_arch_cropped.jpg"> 
-Drawn with the newest update of the industry leading GAD system (Graphite Assisted Design)
+Drawn with the newest update of the industry leading GAD system (Graphite Assisted Design) 
 
+
+### CPE_CPU
 <img src="doc/block_diagrams/cpe_cpu-cpe_cpu.svg"> 
 
-The focus here was by no means to be efficient. I mean this is a single cycle processor, it's far from efficient. The goal was simplicity, and I can make improvements from there. I saw an intersting write up on a simple two stage pipeline I may try out next :) 
+The focus here was by no means to be efficient. I mean this is a single cycle processor, it's far from efficient. The goal was simplicity, and I can make improvements from there. I saw an intersting write up on a simple two stage pipeline that I may try out next :) 
 
 ## Sub Modules
 
